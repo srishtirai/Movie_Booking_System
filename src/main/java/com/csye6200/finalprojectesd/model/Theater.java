@@ -2,24 +2,25 @@ package com.csye6200.finalprojectesd.model;
 
 public class Theater {
     
-    private long id;
+    private long theaterId;
     private String name;
     private String location;
     private String openingTime;
     private String closingTime;
+    private int capacity;
 
     public Theater() {
     }
 
-    public long getId() {
-        return id;
-    }
+    public long getTheaterId() {
+		return theaterId;
+	}
 
-    public void setId(long id) {
-        this.id = id;
-    }
+	public void setTheaterId(long theaterId) {
+		this.theaterId = theaterId;
+	}
 
-    public String getName() {
+	public String getName() {
         return name;
     }
 
@@ -51,5 +52,12 @@ public class Theater {
         this.closingTime = closingTime;
     }
     
+	public int getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
     
 }

@@ -1,53 +1,55 @@
 package com.csye6200.finalprojectesd.model;
 
+import java.util.Date;
+
 public class Booking {
     private long id;
-    private String username;
-    private long showTime;
+    private User user;
+    private Showtime showTime;
     private int numberOfTickets;
-    private String bookingTime;
+    private Date bookingDateTime;
 
     public Booking() {
     }
 
-    public long getId() {
-        return id;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public void setId(long id) {
-        this.id = id;
-    }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    public long getShowTime() {
-        return showTime;
-    }
+	public Showtime getShowTime() {
+		return showTime;
+	}
 
-    public void setShowTime(long showTime) {
-        this.showTime = showTime;
-    }
+	public void setShowTime(Showtime showTime) {
+		this.showTime = showTime;
+	}
 
-    public int getNumberOfTickets() {
-        return numberOfTickets;
-    }
+	public int getNumberOfTickets() {
+		return numberOfTickets;
+	}
 
-    public void setNumberOfTickets(int numberOfTickets) {
-        this.numberOfTickets = numberOfTickets;
-    }
+	public void setNumberOfTickets(int numberOfTickets) {
+		this.numberOfTickets = numberOfTickets;
+	}
 
-    public String getBookingTime() {
-        return bookingTime;
-    }
+	public Date getBookingDateTime() {
+		return bookingDateTime;
+	}
 
-    public void setBookingTime(String bookingTime) {
-        this.bookingTime = bookingTime;
-    }
-    
+	public void setBookingDateTime(Date bookingDateTime) {
+		this.bookingDateTime = bookingDateTime;
+	}
+
 }

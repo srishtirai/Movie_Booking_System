@@ -1,63 +1,64 @@
 package com.csye6200.finalprojectesd.model;
 
+import java.util.Date;
+
 public class Showtime {
-    private long id;
-    private long movie;
-    private long theater;
-    private String startTime;
-    private String endTime;
+    private long showtimeId;
+    private Movie movie;
+    private Theater theater;
+    private Date startTime;
+    private Date endTime;
     private int totalSeats;
 
     public Showtime() {
     }
 
-    public long getId() {
-        return id;
-    }
+	public long getShowtimeId() {
+		return showtimeId;
+	}
 
-    public void setId(long id) {
-        this.id = id;
-    }
+	public void setShowtimeId(long showtimeId) {
+		this.showtimeId = showtimeId;
+	}
 
-    public long getMovie() {
-        return movie;
-    }
+	public Movie getMovie() {
+		return movie;
+	}
 
-    public void setMovie(long movie) {
-        this.movie = movie;
-    }
+	public void setMovie(Movie movie) {
+		this.movie = movie;
+	}
 
-    public long getTheater() {
-        return theater;
-    }
+	public Theater getTheater() {
+		return theater;
+	}
 
-    public void setTheater(long theater) {
-        this.theater = theater;
-    }
+	public void setTheater(Theater theater) {
+		this.theater = theater;
+	}
 
-    public String getStartTime() {
-        return startTime;
-    }
+	public Date getStartTime() {
+		return startTime;
+	}
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
 
-    public String getEndTime() {
-        return endTime;
-    }
+	public Date getEndTime() {
+		return endTime;
+	}
 
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
 
-    public int getTotalSeats() {
-        return totalSeats;
-    }
+	public int getTotalSeats() {
+		return totalSeats;
+	}
 
-    public void setTotalSeats(int totalSeats) {
-        this.totalSeats = totalSeats;
-    }
-    
-    
+	public void setTotalSeats(int totalSeats) {
+		this.totalSeats = totalSeats;
+	}
+
 }
