@@ -1,9 +1,9 @@
-package com.csye6200.finalprojectesd.model;
+package com.csye6220.finalprojectesd.model;
 
 import java.util.Date;
 
 public class Review {
-	private long reviewId;
+	private Long reviewId;
 	private User user;
 	private Movie movie;
 	private int rating;
@@ -14,11 +14,11 @@ public class Review {
 		
 	}
 	
-	public long getReviewId() {
+	public Long getReviewId() {
 		return reviewId;
 	}
 	
-	public void setReviewId(long reviewId) {
+	public void setReviewId(Long reviewId) {
 		this.reviewId = reviewId;
 	}
 	

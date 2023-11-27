@@ -1,4 +1,4 @@
-package com.csye6200.finalprojectesd;
+package com.csye6220.finalprojectesd;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

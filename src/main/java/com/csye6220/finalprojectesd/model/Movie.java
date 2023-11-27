@@ -1,26 +1,26 @@
-package com.csye6200.finalprojectesd.model;
+package com.csye6220.finalprojectesd.model;
 
 import java.util.Date;
 
 public class Movie {
-    private long movieId;
+    private Long movieId;
     private String title;
     private String description;
     private Date releaseDate;
     private int duration;
     private Genre genre;
-    private String[] cast;
+    private String cast;
     private String language;
     private String iamgeUrl;
 
     public Movie() {
     }
 
-	public long getMovieId() {
+	public Long getMovieId() {
 		return movieId;
 	}
 
-	public void setMovieId(long movieId) {
+	public void setMovieId(Long movieId) {
 		this.movieId = movieId;
 	}
 
@@ -64,11 +64,11 @@ public class Movie {
 		this.genre = genre;
 	}
 
-	public String[] getCast() {
+	public String getCast() {
 		return cast;
 	}
 
-	public void setCast(String[] cast) {
+	public void setCast(String cast) {
 		this.cast = cast;
 	}
 

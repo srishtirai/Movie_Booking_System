@@ -1,23 +1,23 @@
-package com.csye6200.finalprojectesd.model;
+package com.csye6220.finalprojectesd.model;
 
 
 public class User {
 
-    private long userId;
+    private Long userId;
     private String username;
     private String password;
     private UserRole role;
     private String email;
-    private long phoneNumber;
+    private Long phoneNumber;
 
     public User() {
     }
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -53,11 +53,11 @@ public class User {
         this.email = email;
     }
 
-    public long getPhoneNumber() {
+    public Long getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(long phoneNumber) {
+    public void setPhoneNumber(Long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
     

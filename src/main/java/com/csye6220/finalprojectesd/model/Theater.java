@@ -1,8 +1,8 @@
-package com.csye6200.finalprojectesd.model;
+package com.csye6220.finalprojectesd.model;
 
 public class Theater {
     
-    private long theaterId;
+    private Long theaterId;
     private String name;
     private String location;
     private String openingTime;
@@ -12,11 +12,11 @@ public class Theater {
     public Theater() {
     }
 
-    public long getTheaterId() {
+    public Long getTheaterId() {
 		return theaterId;
 	}
 
-	public void setTheaterId(long theaterId) {
+	public void setTheaterId(Long theaterId) {
 		this.theaterId = theaterId;
 	}
 

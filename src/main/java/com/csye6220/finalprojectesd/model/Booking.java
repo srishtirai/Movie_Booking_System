@@ -1,9 +1,9 @@
-package com.csye6200.finalprojectesd.model;
+package com.csye6220.finalprojectesd.model;
 
 import java.util.Date;
 
 public class Booking {
-    private long id;
+    private Long id;
     private User user;
     private Showtime showTime;
     private int numberOfTickets;
@@ -12,11 +12,11 @@ public class Booking {
     public Booking() {
     }
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

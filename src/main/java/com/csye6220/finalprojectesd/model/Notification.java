@@ -1,9 +1,9 @@
-package com.csye6200.finalprojectesd.model;
+package com.csye6220.finalprojectesd.model;
 
 import java.util.Date;
 
 public class Notification {
-	private long notificationId;
+	private Long notificationId;
 	private User user;
 	private String message;
 	private Date timestamp;
@@ -11,11 +11,11 @@ public class Notification {
 	public Notification() {
 	}
 
-	public long getNotificationId() {
+	public Long getNotificationId() {
 		return notificationId;
 	}
 
-	public void setNotificationId(long notificationId) {
+	public void setNotificationId(Long notificationId) {
 		this.notificationId = notificationId;
 	}
 

@@ -1,9 +1,9 @@
-package com.csye6200.finalprojectesd.model;
+package com.csye6220.finalprojectesd.model;
 
 import java.util.Date;
 
 public class Showtime {
-    private long showtimeId;
+    private Long showtimeId;
     private Movie movie;
     private Theater theater;
     private Date startTime;
@@ -13,11 +13,11 @@ public class Showtime {
     public Showtime() {
     }
 
-	public long getShowtimeId() {
+	public Long getShowtimeId() {
 		return showtimeId;
 	}
 
-	public void setShowtimeId(long showtimeId) {
+	public void setShowtimeId(Long showtimeId) {
 		this.showtimeId = showtimeId;
 	}
 

@@ -1,4 +1,4 @@
-package com.csye6200.finalprojectesd.model;
+package com.csye6220.finalprojectesd.model;
 
 public enum Genre {
 	ACTION,

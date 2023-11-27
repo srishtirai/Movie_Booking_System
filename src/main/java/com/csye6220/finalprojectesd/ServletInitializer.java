@@ -1,4 +1,4 @@
-package com.csye6200.finalprojectesd;
+package com.csye6220.finalprojectesd;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
