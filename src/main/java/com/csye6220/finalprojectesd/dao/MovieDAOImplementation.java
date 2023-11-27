@@ -36,7 +36,7 @@ public class MovieDAOImplementation implements MovieDAO {
 	}
 
 	@Override
-	public void deleteMovie(Movie movie) {
+	public void deleteMovie(Long id) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -54,7 +54,7 @@ public class MovieDAOImplementation implements MovieDAO {
 	}
 
 	@Override
-	public List<Review> findReviewsByMovie(Movie movie) {
+	public List<Review> findReviewsByMovie(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -34,7 +34,7 @@ public class TheaterDAOImplementation implements TheaterDAO {
 	}
 
 	@Override
-	public void deleteTheater(Theater theater) {
+	public void deleteTheater(Long id) {
 		// TODO Auto-generated method stub
 
 	}

@@ -14,13 +14,13 @@ import com.csye6220.finalprojectesd.model.Movie;
 @RequestMapping("/")
 public class HomePageController {
 
-//    @Autowired
-//    private MovieDAO movieDAO;
+    @Autowired
+    private MovieDAO movieDAO;
 
     @GetMapping
-    public String showHomePage() {
-//        List<Movie> movies = movieDAO.getAllMovies();
-//        model.addAttribute("movies", movies);
+    public String showHomePage(Model model) {
+        List<Movie> movies = movieDAO.getAllMovies();
+        model.addAttribute("movies", movies);
         return "homePage";
     }
 }

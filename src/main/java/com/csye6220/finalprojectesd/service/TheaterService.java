@@ -30,8 +30,8 @@ public class TheaterService {
     	theaterDAO.updateTheater(theater);
     }
     
-    public void deleteTheater(Theater theater) {
-    	theaterDAO.deleteTheater(theater);
+    public void deleteTheater(Long id) {
+    	theaterDAO.deleteTheater(id);
     }
 	
 }

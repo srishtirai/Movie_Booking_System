@@ -9,5 +9,5 @@ public interface TheaterDAO {
 	public Theater getTheaterById(Long id);
 	public List<Theater> getAllTheaters();
     public void updateTheater(Theater theater);
-    public void deleteTheater(Theater theater);
+    public void deleteTheater(Long id);
 }

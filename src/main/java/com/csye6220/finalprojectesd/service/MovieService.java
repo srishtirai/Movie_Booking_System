@@ -32,8 +32,8 @@ public class MovieService {
 		movieDAO.updateMovie(movie);
 	}
 
-	public void deleteMovie(Movie movie) {
-		movieDAO.deleteMovie(movie);
+	public void deleteMovie(Long id) {
+		movieDAO.deleteMovie(id);
 	}
 
 	public List<Movie> findByMovieName(String movieName) {
@@ -44,8 +44,8 @@ public class MovieService {
 		return movieDAO.findByGenre(genre);
 	}
 
-	public List<Review> findReviewsByMovie(Movie movie) {
-		return movieDAO.findReviewsByMovie(movie);
+	public List<Review> findReviewsByMovie(Long id) {
+		return movieDAO.findReviewsByMovie(id);
 	}
 	
 }

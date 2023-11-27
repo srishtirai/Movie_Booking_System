@@ -1,5 +1,7 @@
 package com.csye6220.finalprojectesd.controller;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,12 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.csye6220.finalprojectesd.dao.UserDAO;
 import com.csye6220.finalprojectesd.model.User;
+import com.csye6220.finalprojectesd.service.UserService;
 
 @Controller
 public class UserController{
     
     @Autowired
-    private UserDAO userDAO;
+    private UserService userService;
     
     @GetMapping("/login")
     public String showLoginForm() {
@@ -24,11 +27,10 @@ public class UserController{
     
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password, Model model) {
-        User user = userDAO.getUserByUsername(username);
-        
+        User user = userService.getUserByUsername(username);
         if (user != null && user.getPassword().equals(password)) {
             model.addAttribute("user", user);
-            return "redirect:/dashboard";
+            return "dashboard";
         } else {
             model.addAttribute("error", "Invalid credentials");
             return "login";
@@ -51,12 +53,16 @@ public class UserController{
     }
     
     @GetMapping("/profile")
-    public String showUserProfile() {
+    public String showUserProfile(Model model, Principal principal) {
+    	String username = principal.getName();
+        User user = userService.getUserByUsername(username);
+        model.addAttribute("user", user);
         return "profile";
     }
 
     @PostMapping("/profile/update")
-    public String updateProfile(Model model) {
+    public String updateProfile(@ModelAttribute User user, Model model) {
+    	userService.updateUser(user);
         model.addAttribute("message", "Profile updated successfully!");
         return "profile";
     }
@@ -68,7 +74,12 @@ public class UserController{
 
     @PostMapping("/password/change")
     public String changePassword(Model model) {
-        // TODO: Logic to handle password change
         return "passwordChangeForm";
     }
+    
+    @GetMapping("/logout")
+    public String logoutUser() {
+        return "redirect:/login";
+    }
+    
 }

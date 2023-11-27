@@ -11,8 +11,8 @@ public interface MovieDAO {
 	public Movie getMovieById(Long id);
 	public List<Movie> getAllMovies();
     public void updateMovie(Movie movie);
-    public void deleteMovie(Movie movie);
+    public void deleteMovie(Long id);
     public List<Movie> findByMovieName(String movieName);
     public List<Movie> findByGenre(Genre genre);
-    public List<Review> findReviewsByMovie(Movie movie);
+    public List<Review> findReviewsByMovie(Long id);
 }
