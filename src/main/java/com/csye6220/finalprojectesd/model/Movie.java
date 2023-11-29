@@ -1,20 +1,49 @@
 package com.csye6220.finalprojectesd.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "movies")
 public class Movie {
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long movieId;
+	
     private String title;
+    
     private String description;
-    private Date releaseDate;
+    
+    private LocalDateTime releaseDate;
+    
     private int duration;
+    
+    @Enumerated(EnumType.STRING)
     private Genre genre;
+    
     private String cast;
+    
     private String language;
-    private String iamgeUrl;
+    
+    private String imageUrl;
 
     public Movie() {
     }
+    
+	public Movie(Long movieId, String title, String description, LocalDateTime releaseDate, int duration, Genre genre,
+			String cast, String language, String imageUrl) {
+		this.movieId = movieId;
+		this.title = title;
+		this.description = description;
+		this.releaseDate = releaseDate;
+		this.duration = duration;
+		this.genre = genre;
+		this.cast = cast;
+		this.language = language;
+		this.imageUrl = imageUrl;
+	}
 
 	public Long getMovieId() {
 		return movieId;
@@ -40,11 +69,11 @@ public class Movie {
 		this.description = description;
 	}
 
-	public Date getReleaseDate() {
+	public LocalDateTime getReleaseDate() {
 		return releaseDate;
 	}
 
-	public void setReleaseDate(Date releaseDate) {
+	public void setReleaseDate(LocalDateTime releaseDate) {
 		this.releaseDate = releaseDate;
 	}
 
@@ -80,12 +109,12 @@ public class Movie {
 		this.language = language;
 	}
 
-	public String getIamgeUrl() {
-		return iamgeUrl;
+	public String getImageUrl() {
+		return imageUrl;
 	}
 
-	public void setIamgeUrl(String iamgeUrl) {
-		this.iamgeUrl = iamgeUrl;
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
     
 }

@@ -2,47 +2,98 @@ package com.csye6220.finalprojectesd.dao;
 
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Component;
 
+import com.csye6220.finalprojectesd.config.HibernateConfig;
 import com.csye6220.finalprojectesd.model.Booking;
 
 @Component
 public class BookingDAOImplementation implements BookingDAO {
 
+	private final SessionFactory sessionFactory;
+
+    public BookingDAOImplementation() {
+        this.sessionFactory = HibernateConfig.buildSessionFactory();
+    }
+    
 	@Override
 	public void saveBooking(Booking booking) {
-		// TODO Auto-generated method stub
-		
+		Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.persist(booking);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
 	}
 
 	@Override
-	public Booking getBookingById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Booking getBookingById(Long bookingId) {
+		try (Session session = sessionFactory.openSession()) {
+            return session.get(Booking.class, bookingId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
 	}
 
 	@Override
 	public Booking getBookingByUserId(Long userId) {
-		// TODO Auto-generated method stub
-		return null;
+		try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Booking WHERE user.userId = :userId", Booking.class)
+                    .setParameter("userId", userId)
+                    .uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
 	}
 
 	@Override
 	public List<Booking> getAllBookings() {
-		// TODO Auto-generated method stub
-		return null;
+		try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Booking", Booking.class).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
 	}
 
 	@Override
 	public void updateBooking(Booking booking) {
-		// TODO Auto-generated method stub
-		
+		Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.merge(booking);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
 	}
 
 	@Override
 	public void deleteBooking(Booking booking) {
-		// TODO Auto-generated method stub
-		
+		Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.remove(booking);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
 	}
 
 }

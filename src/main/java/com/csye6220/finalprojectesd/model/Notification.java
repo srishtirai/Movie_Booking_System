@@ -2,10 +2,22 @@ package com.csye6220.finalprojectesd.model;
 
 import java.util.Date;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "notifications")
 public class Notification {
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long notificationId;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
 	private User user;
+	
 	private String message;
+	
 	private Date timestamp;
 	
 	public Notification() {

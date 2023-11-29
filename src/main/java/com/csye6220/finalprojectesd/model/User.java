@@ -1,13 +1,24 @@
 package com.csye6220.finalprojectesd.model;
 
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "users")
 public class User {
 
+	@Id
+    @GeneratedValue
     private Long userId;
+	
     private String username;
+    
     private String password;
+    
+    @Enumerated(EnumType.STRING)
     private UserRole role;
+    
     private String email;
+    
     private Long phoneNumber;
 
     public User() {
@@ -59,8 +70,6 @@ public class User {
 
     public void setPhoneNumber(Long phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-    
-    
+    }  
     
 }

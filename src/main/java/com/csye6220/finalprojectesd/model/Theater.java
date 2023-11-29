@@ -1,12 +1,23 @@
 package com.csye6220.finalprojectesd.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "theaters")
 public class Theater {
     
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long theaterId;
+	
     private String name;
+    
     private String location;
+    
     private String openingTime;
+    
     private String closingTime;
+    
     private int capacity;
 
     public Theater() {

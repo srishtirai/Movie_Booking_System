@@ -1,23 +1,47 @@
 package com.csye6220.finalprojectesd.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "bookings")
 public class Booking {
-    private Long id;
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long bookingId;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private User user;
+    
+	@ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "showtime_id")
     private Showtime showTime;
+    
     private int numberOfTickets;
-    private Date bookingDateTime;
+    
+    private LocalDateTime bookingDateTime;
 
     public Booking() {
     }
-
-	public Long getId() {
-		return id;
+    
+	public Booking(Long bookingId, User user, Showtime showTime, int numberOfTickets, LocalDateTime bookingDateTime) {
+		this.bookingId = bookingId;
+		this.user = user;
+		this.showTime = showTime;
+		this.numberOfTickets = numberOfTickets;
+		this.bookingDateTime = bookingDateTime;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+
+	public Long getBookingId() {
+		return bookingId;
+	}
+
+	public void setBookingId(Long bookingId) {
+		this.bookingId = bookingId;
 	}
 
 	public User getUser() {
@@ -44,11 +68,11 @@ public class Booking {
 		this.numberOfTickets = numberOfTickets;
 	}
 
-	public Date getBookingDateTime() {
+	public LocalDateTime getBookingDateTime() {
 		return bookingDateTime;
 	}
 
-	public void setBookingDateTime(Date bookingDateTime) {
+	public void setBookingDateTime(LocalDateTime bookingDateTime) {
 		this.bookingDateTime = bookingDateTime;
 	}
 
