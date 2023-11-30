@@ -16,9 +16,11 @@ public class HomePageController {
 
     @Autowired
     private MovieDAO movieDAO;
-
+    
     @GetMapping
     public String showHomePage(Model model) {
+//    	User newUser = new User("movieadmin", "Srishti@99", UserRole.ADMIN, "movieadmin@gmail.com", 4134567890L);
+//		userService.saveUser(newUser);
         List<Movie> movies = movieDAO.getAllMovies();
         model.addAttribute("movies", movies);
         return "homePage";

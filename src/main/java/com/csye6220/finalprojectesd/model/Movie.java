@@ -10,12 +10,14 @@ public class Movie {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="movie_id")
     private Long movieId;
 	
     private String title;
     
     private String description;
     
+    @Column(name="release_date")
     private LocalDateTime releaseDate;
     
     private int duration;
@@ -27,6 +29,7 @@ public class Movie {
     
     private String language;
     
+    @Column(name="image_url")
     private String imageUrl;
 
     public Movie() {

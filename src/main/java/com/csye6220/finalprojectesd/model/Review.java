@@ -10,6 +10,7 @@ public class Review {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="review_id")
 	private Long reviewId;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -24,6 +25,7 @@ public class Review {
 	
 	private String comment;
 	
+	@Column(name="review_date")
 	private LocalDateTime reviewDate;
 	
 	public Review() {

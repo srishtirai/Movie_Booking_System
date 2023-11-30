@@ -8,6 +8,7 @@ public class User {
 
 	@Id
     @GeneratedValue
+    @Column(name="user_id")
     private Long userId;
 	
     private String username;
@@ -19,12 +20,21 @@ public class User {
     
     private String email;
     
+    @Column(name="phone_number")
     private Long phoneNumber;
 
     public User() {
     }
 
-    public Long getUserId() {
+    public User(String username, String password, UserRole role, String email, Long phoneNumber) {
+		this.username = username;
+		this.password = password;
+		this.role = role;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+	}
+
+	public Long getUserId() {
         return userId;
     }
 

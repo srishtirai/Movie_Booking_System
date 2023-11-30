@@ -10,6 +10,7 @@ public class Showtime {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="showtime_id")
     private Long showtimeId;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -20,10 +21,13 @@ public class Showtime {
     @JoinColumn(name = "theater_id")
     private Theater theater;
     
+	@Column(name="start_time")
     private LocalDateTime startTime;
     
+	@Column(name="end_time")
     private LocalDateTime endTime;
     
+	@Column(name="total_seats")
     private int totalSeats;
 
     public Showtime() {

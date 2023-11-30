@@ -8,14 +8,17 @@ public class Theater {
     
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="theater_id")
     private Long theaterId;
 	
     private String name;
     
     private String location;
     
+    @Column(name="opening_time")
     private String openingTime;
     
+    @Column(name="closing_time")
     private String closingTime;
     
     private int capacity;

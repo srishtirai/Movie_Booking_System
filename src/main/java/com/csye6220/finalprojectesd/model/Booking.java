@@ -10,6 +10,7 @@ public class Booking {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="booking_id")
     private Long bookingId;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -20,8 +21,10 @@ public class Booking {
     @JoinColumn(name = "showtime_id")
     private Showtime showTime;
     
+	@Column(name="no_of_tickets")
     private int numberOfTickets;
     
+	@Column(name="booking_date")
     private LocalDateTime bookingDateTime;
 
     public Booking() {

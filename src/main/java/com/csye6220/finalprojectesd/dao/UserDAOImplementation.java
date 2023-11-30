@@ -12,6 +12,8 @@ import com.csye6220.finalprojectesd.model.Review;
 import com.csye6220.finalprojectesd.model.User;
 import com.csye6220.finalprojectesd.model.UserRole;
 
+import jakarta.persistence.Column;
+
 @Component
 public class UserDAOImplementation implements UserDAO {
 
@@ -39,8 +41,7 @@ public class UserDAOImplementation implements UserDAO {
 	@Override
 	public User getUserByUsername(String username) {
 		try (Session session = sessionFactory.openSession()) {
-            String hql = "FROM User WHERE username = :username";
-            return session.createQuery(hql, User.class)
+            return session.createQuery("FROM User WHERE email = :username", User.class)
                     .setParameter("username", username)
                     .uniqueResult();
         } catch (Exception e) {
