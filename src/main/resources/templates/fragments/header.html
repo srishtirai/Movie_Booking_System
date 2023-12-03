@@ -1,0 +1,36 @@
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+	  <div class="container-fluid">
+	    <div class="navbar" id="navbarNav">
+	      <ul class="navbar-nav">
+	        <li class="nav-item">
+	          <a class="nav-link active" aria-current="page" th:href="@{/movie}">Browse Movies</a>
+	        </li>
+	        <li class="nav-item">
+	          <a class="nav-link" th:href="@{/theater}">Browse Theaters</a>
+	        </li>
+	        <li class="nav-item">
+	          <a class="nav-link" th:href="@{/showtime}">Browse Showtimes</a>
+	        </li>
+	        <span th:if="${currentUser == null}" class="d-flex">
+		         <li class="nav-item" >
+					 <a class="nav-link" th:href="@{/login}">Sign In</a>
+				</li>
+				<span class="navbar-text">Or</span>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/signup}">Join now</a>
+		        </li>
+	        </span>
+	        <span th:if="${currentUser != null}" class="d-flex">
+		        <li class="nav-item">
+					<a class="nav-link" th:href="@{/profile}">Profile</a>
+		        </li>
+		        <li class="nav-item">
+					<a class="nav-link" th:href="@{/logout}">Log out</a>
+		        </li>
+	        </span>
+	      </ul>
+	    </div>
+	  </div>
+	</nav>
+</header>

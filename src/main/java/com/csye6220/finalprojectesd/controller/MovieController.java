@@ -3,11 +3,11 @@ package com.csye6220.finalprojectesd.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,28 +24,30 @@ public class MovieController {
 	@Autowired
     private MovieService movieService;
     
+	@GetMapping
+	public String getMoviesPage(Model model) {
+		List<Movie> searchResults = movieService.getAllMovies();
+		model.addAttribute("movies", searchResults);
+	    return "movies";
+	}
+	
+	@Secured({"ROLE_ADMIN", "ROLE_STAFF"})
     @GetMapping("/add")
     public String showAddMoviesForm(Model model) {
-    	Movie newMovie = new Movie();
-        model.addAttribute("newMovie", newMovie);
+        model.addAttribute("newMovie", new Movie());
+        model.addAttribute("editMode", false); 
         return "addMovie";
     }
     
+	@Secured({"ROLE_ADMIN", "ROLE_STAFF"})
     @PostMapping("/add")
-    public String addMovie(@ModelAttribute Movie newMovie, Model model) {
+    public String addMovie(@ModelAttribute("newMovie") Movie newMovie, Model model) {
     	movieService.saveMovie(newMovie);
-        return "redirect:/movie/list";
+        return "redirect:/movie";
     }
     
-    @GetMapping("/list")
-    public String listMovies(Model model) {
-    	 List<Movie> movies = movieService.getAllMovies();
-         model.addAttribute("movies", movies);
-        return "movieList";
-    }
-    
-    @GetMapping("/{id}")
-    public String viewMovieDetails(@PathVariable Long id, Model model) {
+    @PostMapping("/details")
+    public String viewMovieDetails(@RequestParam("movieId") Long id, Model model) {
         Movie movie = movieService.getMovieById(id);
         List<Review> reviews = movieService.findReviewsByMovie(id);
         if (movie != null) {
@@ -54,7 +56,7 @@ public class MovieController {
             return "movieDetails";
         } else {
         	model.addAttribute("movie", movie);
-            return "redirect:/movie/list";
+            return "redirect:/movie";
         }
     }
     
@@ -67,31 +69,35 @@ public class MovieController {
     		searchResults = movieService.findByGenre(genre);
     	}
         model.addAttribute("movies", searchResults);
-	    return "movieList";
+	    return "movies";
     }
     
-    @GetMapping("/edit/{id}")
-    public String showEditMovieForm(@PathVariable Long id, Model model) {
+    @Secured({"ROLE_ADMIN", "ROLE_STAFF"})
+    @PostMapping("/edit")
+    public String showEditMovieForm(@RequestParam("movieId") Long id, Model model) {
         Movie movie = movieService.getMovieById(id);
 
         if (movie != null) {
-            model.addAttribute("editedMovie", movie);
-            return "editMovie";
+            model.addAttribute("newMovie", movie);
+            model.addAttribute("editMode", true); 
+            return "addMovie";
         } else {
-            return "redirect:/movie/list";
+            return "redirect:/movie";
         }
     }
 
-    @PostMapping("/edit")
+    @Secured({"ROLE_ADMIN", "ROLE_STAFF"})
+    @PostMapping("/editSave")
     public String editMovie(@ModelAttribute Movie editedMovie, Model model) {
         movieService.updateMovie(editedMovie);
-        return "redirect:/movie/list";
+        return "redirect:/movie";
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteMovie(@PathVariable Long id) {
+    @Secured({"ROLE_ADMIN", "ROLE_STAFF"})
+    @PostMapping("/delete")
+    public String deleteMovie(@RequestParam("movieId") Long id) {
         movieService.deleteMovie(id);
-        return "redirect:/movie/list";
+        return "redirect:/movie";
     }
 
 }

@@ -8,5 +8,5 @@ public enum Genre {
 	FICTION,
 	HORROR,
 	ROMANCE,
-	Thriller
+	THRILLER
 }

@@ -41,7 +41,7 @@ public class UserController{
     
     @PostMapping("/login")
     public String login() {;
-    	return "homepage";
+    	return "redirect:/";
     }
     
     @GetMapping("/signup")
@@ -95,7 +95,7 @@ public class UserController{
     @GetMapping("/logout")
     public String logoutUser(HttpServletRequest request) {
     	request.getSession().invalidate();
-        return "homepage";
+        return "redirect:/";
     }
     
 }
