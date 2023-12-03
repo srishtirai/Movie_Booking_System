@@ -1,4 +1,4 @@
-package com.csye6220.finalprojectesd.config;
+package com.csye6220.finalprojectesd.util;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -11,7 +11,7 @@ import com.csye6220.finalprojectesd.model.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HibernateConfig {
+public class HibernateUtil {
 
     public static SessionFactory buildSessionFactory(){
         Map<String, Object> settings = new HashMap<>();

@@ -5,20 +5,20 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-import com.csye6220.finalprojectesd.config.HibernateConfig;
 import com.csye6220.finalprojectesd.model.Genre;
 import com.csye6220.finalprojectesd.model.Movie;
 import com.csye6220.finalprojectesd.model.Review;
+import com.csye6220.finalprojectesd.util.HibernateUtil;
 
-@Component
+@Repository
 public class MovieDAOImplementation implements MovieDAO {
 
 	private final SessionFactory sessionFactory;
 
     public MovieDAOImplementation() {
-        this.sessionFactory = HibernateConfig.buildSessionFactory();
+        this.sessionFactory = HibernateUtil.buildSessionFactory();
     }
     
 	@Override

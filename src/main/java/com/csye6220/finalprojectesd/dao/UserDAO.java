@@ -9,6 +9,7 @@ import com.csye6220.finalprojectesd.model.UserRole;
 
 public interface UserDAO {
     public void saveUser(User user);
+    public User getUserByEmail(String email);
     public User getUserByUsername(String username);
     public User getUserById(Long id);
     public List<User> getUserByRole(UserRole role);

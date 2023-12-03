@@ -2,6 +2,9 @@ package com.csye6220.finalprojectesd.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.csye6220.finalprojectesd.dao.MovieDAO;
 import com.csye6220.finalprojectesd.model.Movie;
+import com.csye6220.finalprojectesd.model.User;
+import com.csye6220.finalprojectesd.model.UserRole;
+import com.csye6220.finalprojectesd.service.UserService;
 
 @Controller
 @RequestMapping("/")
@@ -16,11 +22,21 @@ public class HomePageController {
 
     @Autowired
     private MovieDAO movieDAO;
+//    @Autowired
+//    private UserService userService;
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
     
     @GetMapping
-    public String showHomePage(Model model) {
-//    	User newUser = new User("movieadmin", "Srishti@99", UserRole.ADMIN, "movieadmin@gmail.com", 4134567890L);
+    public String showHomePage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+//    	User newUser = new User("movieadmin", "movieadmin@gmail.com", passwordEncoder.encode("Srishti@99"), UserRole.ADMIN, 4134567890L);
 //		userService.saveUser(newUser);
+    	
+    	System.out.println(userDetails);
+    	if (userDetails != null) {
+            model.addAttribute("username", userDetails.getUsername());
+            model.addAttribute("authorities", userDetails.getAuthorities());
+        }
         List<Movie> movies = movieDAO.getAllMovies();
         model.addAttribute("movies", movies);
         return "homePage";

@@ -5,18 +5,18 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-import com.csye6220.finalprojectesd.config.HibernateConfig;
 import com.csye6220.finalprojectesd.model.Booking;
+import com.csye6220.finalprojectesd.util.HibernateUtil;
 
-@Component
+@Repository
 public class BookingDAOImplementation implements BookingDAO {
 
 	private final SessionFactory sessionFactory;
 
     public BookingDAOImplementation() {
-        this.sessionFactory = HibernateConfig.buildSessionFactory();
+        this.sessionFactory = HibernateUtil.buildSessionFactory();
     }
     
 	@Override

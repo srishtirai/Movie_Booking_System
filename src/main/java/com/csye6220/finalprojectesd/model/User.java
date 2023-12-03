@@ -1,10 +1,17 @@
 package com.csye6220.finalprojectesd.model;
 
+import java.util.Collection;
+import java.util.Collections;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
 	@Id
     @GeneratedValue
@@ -13,12 +20,12 @@ public class User {
 	
     private String username;
     
+    private String email;
+    
     private String password;
     
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    
-    private String email;
     
     @Column(name="phone_number")
     private Long phoneNumber;
@@ -26,11 +33,11 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, UserRole role, String email, Long phoneNumber) {
+    public User(String username, String email, String password, UserRole role,  Long phoneNumber) {
 		this.username = username;
+		this.email = email;
 		this.password = password;
 		this.role = role;
-		this.email = email;
 		this.phoneNumber = phoneNumber;
 	}
 
@@ -82,4 +89,28 @@ public class User {
         this.phoneNumber = phoneNumber;
     }  
     
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(new SimpleGrantedAuthority(role.name()));
+    }
+    
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

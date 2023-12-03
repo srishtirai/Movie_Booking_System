@@ -12,8 +12,8 @@
 		    <div class="mb-3">
 		        <h1 class="text-center" th:text="${#strings.capitalize(type)}"></h1>
 		    </div>
-		    <div th:if="${error}" class="mb-3">
-		        <p class="alert alert-danger" th:text="${error}"></p>
+		    <div th:if="${param.error}" class="mb-3">
+		        <p class="alert alert-danger" th:text="${session.error}"></p>
 		    </div>
 		    <div th:if="${success}" class="mb-3">
 		        <p class="alert alert-success" th:text="${success}"></p>
@@ -33,6 +33,10 @@
 					    Staff
 					  </label>
 					</div>
+		        </div>
+		        <div class="mb-3" th:if="${type == 'signup'}">
+		            <label for="username" class="form-label">Username</label>
+		            <input type="username" class="form-control" id="username" name="userid" required>
 		        </div>
 		        <div class="mb-3">
 		            <label for="email" class="form-label">Email</label>

@@ -2,7 +2,9 @@ package com.csye6220.finalprojectesd.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.csye6220.finalprojectesd.dao.UserDAO;
@@ -11,16 +13,24 @@ import com.csye6220.finalprojectesd.model.User;
 import com.csye6220.finalprojectesd.model.UserRole;
 
 @Service
-public class UserService {
-	@Autowired
-	private UserDAO userDAO;
+public class UserService implements UserDetailsService {
 	
+	private final UserDAO userDAO;
+
+    public UserService(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+    
 	public void saveUser(User user) {
 		userDAO.saveUser(user);
 	}
 	
     public User getUserByUsername(String username) {
     	return userDAO.getUserByUsername(username);
+    }
+    
+    public User getUserByEmail(String email) {
+    	return userDAO.getUserByEmail(email);
     }
     
     public User getUserById(Long id) {
@@ -46,4 +56,48 @@ public class UserService {
     public List<Review> findReviewsByUser(User user) {
     	return userDAO.findReviewsByUser(user);
     }
+    
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = getUserByEmail(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+        return user;
+    }
 }
+
+//@Component
+//public class CustomAuthenticationProvider implements AuthenticationProvider {
+//
+//    private final UserService userService;
+//
+//    @Autowired
+//    public CustomAuthenticationProvider(UserService userService) {
+//        this.userService = userService;
+//    }
+//
+//    @Override
+//    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+//        String username = authentication.getName();
+//        String password = authentication.getCredentials().toString();
+//
+//        UserDetails userDetails = userService.loadUserByUsername(username);
+//
+//        if (userDetails == null) {
+//            throw new BadCredentialsException("User not found");
+//        }
+//
+//        if (!password.equals(userDetails.getPassword())) {
+//            throw new BadCredentialsException("Invalid password");
+//        }
+//
+//        return new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());
+//    }
+//
+//    @Override
+//    public boolean supports(Class<?> authentication) {
+//        return authentication.equals(UsernamePasswordAuthenticationToken.class);
+//    }
+//}
+

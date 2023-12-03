@@ -5,22 +5,20 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-import com.csye6220.finalprojectesd.config.HibernateConfig;
 import com.csye6220.finalprojectesd.model.Review;
 import com.csye6220.finalprojectesd.model.User;
 import com.csye6220.finalprojectesd.model.UserRole;
+import com.csye6220.finalprojectesd.util.HibernateUtil;
 
-import jakarta.persistence.Column;
-
-@Component
+@Repository
 public class UserDAOImplementation implements UserDAO {
 
 	private final SessionFactory sessionFactory;
 
     public UserDAOImplementation() {
-        this.sessionFactory = HibernateConfig.buildSessionFactory();
+        this.sessionFactory = HibernateUtil.buildSessionFactory();
     }
     
 	@Override
@@ -39,9 +37,21 @@ public class UserDAOImplementation implements UserDAO {
 	}
 
 	@Override
+	public User getUserByEmail(String email) {
+		try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM User WHERE email = :email", User.class)
+                    .setParameter("email", email)
+                    .uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+	}
+	
+	@Override
 	public User getUserByUsername(String username) {
 		try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM User WHERE email = :username", User.class)
+            return session.createQuery("FROM User WHERE username = :username", User.class)
                     .setParameter("username", username)
                     .uniqueResult();
         } catch (Exception e) {
