@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.csye6220.finalprojectesd.dao.ShowtimeDAO;
 import com.csye6220.finalprojectesd.model.Movie;
 import com.csye6220.finalprojectesd.model.Showtime;
+import com.csye6220.finalprojectesd.model.Theater;
 
 @Service
 public class ShowtimeService {
@@ -19,8 +20,20 @@ public class ShowtimeService {
 		showtimeDAO.saveShowtime(showtime);
 	}
 	
+	public Showtime getShowtimeById(Long id) {
+		return showtimeDAO.getShowtimeById(id);
+	}
+	
+	public List<Showtime> getAllShowtimes() {
+		return showtimeDAO.getAllShowtimes();
+	}
+	
 	public List<Showtime> getAllShowtimesByMovie(Movie movie) {
 		return showtimeDAO.getAllShowtimesByMovie(movie);
+	}
+	
+	public List<Showtime> getAllShowtimesByTheater(Theater theater) {
+		return showtimeDAO.getAllShowtimesByTheater(theater);
 	}
 	
     public void updateShowtime(Showtime showtime) {

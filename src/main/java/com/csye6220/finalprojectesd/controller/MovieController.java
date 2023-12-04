@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.csye6220.finalprojectesd.model.Genre;
 import com.csye6220.finalprojectesd.model.Movie;
 import com.csye6220.finalprojectesd.model.Review;
+import com.csye6220.finalprojectesd.model.Showtime;
 import com.csye6220.finalprojectesd.service.MovieService;
+import com.csye6220.finalprojectesd.service.ShowtimeService;
 
 @Controller
 @RequestMapping("/movie")
@@ -23,6 +25,9 @@ public class MovieController {
     
 	@Autowired
     private MovieService movieService;
+	
+	@Autowired
+	private ShowtimeService showtimeService;
     
 	@GetMapping
 	public String getMoviesPage(Model model) {
@@ -31,7 +36,6 @@ public class MovieController {
 	    return "movies";
 	}
 	
-	@Secured({"ROLE_ADMIN", "ROLE_STAFF"})
     @GetMapping("/add")
     public String showAddMoviesForm(Model model) {
         model.addAttribute("newMovie", new Movie());
@@ -39,7 +43,6 @@ public class MovieController {
         return "addMovie";
     }
     
-	@Secured({"ROLE_ADMIN", "ROLE_STAFF"})
     @PostMapping("/add")
     public String addMovie(@ModelAttribute("newMovie") Movie newMovie, Model model) {
     	movieService.saveMovie(newMovie);
@@ -50,9 +53,11 @@ public class MovieController {
     public String viewMovieDetails(@RequestParam("movieId") Long id, Model model) {
         Movie movie = movieService.getMovieById(id);
         List<Review> reviews = movieService.findReviewsByMovie(id);
+        List<Showtime> showtimes = showtimeService.getAllShowtimesByMovie(movie);
         if (movie != null) {
             model.addAttribute("movie", movie);
             model.addAllAttributes(reviews);
+            model.addAllAttributes(showtimes);
             return "movieDetails";
         } else {
         	model.addAttribute("movie", movie);
@@ -72,7 +77,6 @@ public class MovieController {
 	    return "movies";
     }
     
-    @Secured({"ROLE_ADMIN", "ROLE_STAFF"})
     @PostMapping("/edit")
     public String showEditMovieForm(@RequestParam("movieId") Long id, Model model) {
         Movie movie = movieService.getMovieById(id);
@@ -86,14 +90,12 @@ public class MovieController {
         }
     }
 
-    @Secured({"ROLE_ADMIN", "ROLE_STAFF"})
     @PostMapping("/editSave")
     public String editMovie(@ModelAttribute Movie editedMovie, Model model) {
         movieService.updateMovie(editedMovie);
         return "redirect:/movie";
     }
-
-    @Secured({"ROLE_ADMIN", "ROLE_STAFF"})
+    
     @PostMapping("/delete")
     public String deleteMovie(@RequestParam("movieId") Long id) {
         movieService.deleteMovie(id);

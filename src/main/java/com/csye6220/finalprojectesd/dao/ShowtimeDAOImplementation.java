@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.csye6220.finalprojectesd.model.Movie;
 import com.csye6220.finalprojectesd.model.Showtime;
+import com.csye6220.finalprojectesd.model.Theater;
 import com.csye6220.finalprojectesd.util.HibernateUtil;
 
 @Repository
@@ -36,6 +37,26 @@ public class ShowtimeDAOImplementation implements ShowtimeDAO {
 	}
 
 	@Override
+	public Showtime getShowtimeById(Long id) {
+		try (Session session = sessionFactory.openSession()) {
+            return session.get(Showtime.class, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+	}
+	
+	@Override
+	public List<Showtime> getAllShowtimes() {
+		try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Showtime", Showtime.class).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+	}
+	
+	@Override
 	public List<Showtime> getAllShowtimesByMovie(Movie movie) {
 		 try (Session session = sessionFactory.openSession()) {
 	            return session.createQuery("FROM Showtime WHERE movie.movieId = :movieId", Showtime.class)
@@ -45,6 +66,18 @@ public class ShowtimeDAOImplementation implements ShowtimeDAO {
 	            e.printStackTrace();
 	            return null;
 	        }
+	}
+	
+	@Override
+	public List<Showtime> getAllShowtimesByTheater(Theater thaterId) {
+		try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Showtime WHERE theater.thaterId = :thaterId", Showtime.class)
+            		.setParameter("thaterId", thaterId.getTheaterId())
+            		.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
 	}
 
 	@Override

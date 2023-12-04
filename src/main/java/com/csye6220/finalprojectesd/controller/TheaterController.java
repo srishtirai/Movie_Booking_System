@@ -10,8 +10,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.csye6220.finalprojectesd.model.Movie;
+import com.csye6220.finalprojectesd.model.Review;
+import com.csye6220.finalprojectesd.model.Showtime;
 import com.csye6220.finalprojectesd.model.Theater;
+import com.csye6220.finalprojectesd.service.ShowtimeService;
 import com.csye6220.finalprojectesd.service.TheaterService;
 
 @Controller
@@ -21,55 +26,61 @@ public class TheaterController {
 	@Autowired
     private TheaterService theaterService;
     
+	@Autowired
+	private ShowtimeService showtimeService;
+	
+	@GetMapping
+	public String getTheatersPage(Model model) {
+		List<Theater> searchResults = theaterService.getAllTheaters();
+		model.addAttribute("theaters", searchResults);
+	    return "theaters";
+	}
+	
     @GetMapping("/add")
     public String showAddTheatresForm(Model model) {
-    	Theater newTheater = new Theater();
-        model.addAttribute("newtheater", newTheater);
+        model.addAttribute("newtheater", new Theater());
+        model.addAttribute("editMode", false);
         return "addTheater";
     }
     
     @PostMapping("/add")
     public String addTheater(@ModelAttribute Theater newTheater, Model model) {
     	theaterService.saveTheater(newTheater);
-        return "redirect:/theater/list";
+        return "redirect:/theater";
     }
     
-    @GetMapping("/list")
-    public String listTheaters(Model model) {
-    	 List<Theater> theater = theaterService.getAllTheaters();
-         model.addAttribute("theaters", theater);
-        return "theaterList";
-    }
-    
-    @GetMapping("/{id}")
-    public String viewTheaterServiceDetails(@PathVariable Long id, Model model) {
+    @PostMapping("/details")
+    public String viewTheaterDetails(@RequestParam("theaterId") Long id, Model model) {
         Theater theater = theaterService.getTheaterById(id);
+        List<Showtime> showtimes = showtimeService.getAllShowtimesByTheater(theater);
         model.addAttribute("theater", theater);
+        model.addAllAttributes(showtimes);
         return "redirect:/theater/list";
     }
-    
-    @GetMapping("/edit/{id}")
-    public String showEditTheaterForm(@PathVariable Long id, Model model) {
+
+    @PostMapping("/edit")
+    public String showEditTheaterForm(@RequestParam("theaterId") Long id, Model model) {
         Theater theater = theaterService.getTheaterById(id);
 
         if (theater != null) {
             model.addAttribute("editedTheater", theater);
+            model.addAttribute("editMode", true);
             return "editTheater";
         } else {
-            return "redirect:/theater/list";
+            return "redirect:/theater";
         }
     }
 
-    @PostMapping("/edit")
+    @PostMapping("/editSave")
     public String editTheater(@ModelAttribute Theater editedTheater, Model model) {
     	theaterService.updateTheater(editedTheater);
-        return "redirect:/theater/list";
+        return "redirect:/theater";
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteMovie(@PathVariable Long id) {
+    @PostMapping("/delete")
+    public String deleteTheater(@RequestParam("theaterId") Long id) {
     	theaterService.deleteTheater(id);
-        return "redirect:/theater/list";
+        return "redirect:/theater";
     }
 
 }
