@@ -25,6 +25,9 @@
 		        <li class="nav-item">
 					<a class="nav-link" th:href="@{/profile}">Profile</a>
 		        </li>
+		        <li class="nav-item" th:if="${currentUser != null and (#strings.contains(currentUser.authorities, 'ADMIN') or #strings.contains(currentUser.authorities, 'STAFF'))}">
+					<a class="nav-link" th:href="@{/users}">User Management</a>
+		        </li>
 		        <li class="nav-item">
 					<a class="nav-link" th:href="@{/logout}">Log out</a>
 		        </li>

@@ -4,12 +4,14 @@ import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -63,6 +65,7 @@ public class UserController{
     	} else {
     		UserRole roleValue = UserRole.valueOf(role);
     		User newUser = new User(userid, username, passwordEncoder.encode(password), roleValue, 123456789L);
+    		newUser.setEnabled(role.equals("USER"));
     		userService.saveUser(newUser);
     		redirectAttributes.addFlashAttribute("success", "Email registeration is complete. Login to continue.");
     		return "redirect:/login";
@@ -80,7 +83,32 @@ public class UserController{
     	userService.updateUser(user);
         return "profile";
     }
+    
+    @GetMapping("/users")
+    public String showStaffList(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+    	if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))) {
+    		model.addAttribute("userList", userService.getAllUsers().stream().filter(user -> user.getRole() == UserRole.ADMIN).toList());
+    	} else {
+    		model.addAttribute("userList", userService.getAllUsers().stream().filter(user -> user.getRole() == UserRole.USER).toList());
+    	}
+        return "users";
+    }
+    
+    @GetMapping("/users/approve/{userId}")
+    public String approveStaff(@PathVariable Long userId, Model model) {
+    	User user = userService.getUserById(userId);
+    	user.setEnabled(true);
+    	userService.updateUser(user);
+        return "redirect:/users";
+    }
 
+    @GetMapping("/users/delete/{userId}")
+    public String deleteUsers(@PathVariable Long userId, Model model) {
+    	User user = userService.getUserById(userId);
+    	userService.deleteUser(user);
+        return "redirect:/users";
+    }
+    
     @GetMapping("/logout")
     public String logoutUser(HttpServletRequest request) {
     	request.getSession().invalidate();

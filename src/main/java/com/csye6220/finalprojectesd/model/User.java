@@ -29,6 +29,9 @@ public class User implements UserDetails {
     
     @Column(name="phone_number")
     private Long phoneNumber;
+    
+    @Column(name="enabled")
+    private Boolean enabled;
 
     public User() {
     }
@@ -89,7 +92,15 @@ public class User implements UserDetails {
         this.phoneNumber = phoneNumber;
     }  
     
-    @Override
+    public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority(role.name()));
     }
@@ -111,6 +122,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.enabled;
     }
 }

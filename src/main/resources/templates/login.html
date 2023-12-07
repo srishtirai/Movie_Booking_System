@@ -15,6 +15,9 @@
 		    <div th:if="${param.error}" class="mb-3">
 		        <p class="alert alert-danger" th:text="${session.error}"></p>
 		    </div>
+		    <div th:if="${error}" class="mb-3">
+		        <p class="alert alert-danger" th:text="${error}"></p>
+		    </div>
 		    <div th:if="${success}" class="mb-3">
 		        <p class="alert alert-success" th:text="${success}"></p>
 		    </div>

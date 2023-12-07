@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.csye6220.finalprojectesd.model.Showtime;
+import com.csye6220.finalprojectesd.service.MovieService;
 import com.csye6220.finalprojectesd.service.ShowtimeService;
+import com.csye6220.finalprojectesd.service.TheaterService;
 
 @Controller
 @RequestMapping("/showtime")
@@ -20,6 +22,12 @@ public class ShowtimeController {
     
 	@Autowired
 	private ShowtimeService showtimeService;
+	
+	@Autowired
+	private MovieService movieService;
+	
+	@Autowired
+	private TheaterService theaterService;
 	
 	@GetMapping
 	public String getShowtimesPage(Model model) {
@@ -31,6 +39,8 @@ public class ShowtimeController {
     @GetMapping("/add")
     public String showAddShowtimesForm(Model model) {
         model.addAttribute("newshowtime", new Showtime());
+        model.addAttribute("movies", movieService.getAllMovies());
+        model.addAttribute("theaters", theaterService.getAllTheaters());
         model.addAttribute("editMode", false);
         return "addShowtime";
     }
@@ -46,6 +56,8 @@ public class ShowtimeController {
         Showtime showtime = showtimeService.getShowtimeById(id);
         if (showtime != null) {
             model.addAttribute("editedShowtime", showtime);
+            model.addAttribute("movies", movieService.getAllMovies());
+            model.addAttribute("theaters", theaterService.getAllTheaters());
             model.addAttribute("editMode", true);
             return "editShowtime";
         } else {
