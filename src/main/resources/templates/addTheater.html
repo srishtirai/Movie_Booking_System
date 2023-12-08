@@ -17,7 +17,7 @@
 	    <h2 th:text="${editMode ? 'Edit Theater' : 'Add New Theater'}"></h2>
 		
 	    <form class="text-center" th:object="${newtheater}" th:action="${editMode} ? '/esdFinalProject/theater/editSave' : '/esdFinalProject/theater/add'" method="post">
-			 <input type="hidden" th:if="${editMode}" th:field="*{movieId}"/>
+			 <input type="hidden" th:if="${editMode}" th:field="*{theaterId}"/>
 			 
 	         <div class="mb-3 row">
 	            <label for="name" class="form-label col-sm-5">Name</label>

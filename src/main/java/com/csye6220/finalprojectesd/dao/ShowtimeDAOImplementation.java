@@ -26,7 +26,7 @@ public class ShowtimeDAOImplementation implements ShowtimeDAO {
 		Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            session.persist(showtime);
+            session.merge(showtime);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -71,8 +71,8 @@ public class ShowtimeDAOImplementation implements ShowtimeDAO {
 	@Override
 	public List<Showtime> getAllShowtimesByTheater(Theater thaterId) {
 		try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM Showtime WHERE theater.thaterId = :thaterId", Showtime.class)
-            		.setParameter("thaterId", thaterId.getTheaterId())
+            return session.createQuery("FROM Showtime WHERE theater.theaterId = :theaterId", Showtime.class)
+            		.setParameter("theaterId", thaterId.getTheaterId())
             		.getResultList();
         } catch (Exception e) {
             e.printStackTrace();

@@ -17,13 +17,13 @@
     </a>
 	<div class="container">
 	    <div class="row">
-	        <div th:each="theatre : ${theatres}" class="col-md-4 mb-4">
+	        <div th:each="theater : ${theaters}" class="col-md-4 mb-4">
 	            <div class="card">
 	               	<div class="card-body">
-	                    <h5 class="card-title" th:text="${theatre.name}"></h5>
-	                    <p class="card-text" th:text="${theatre.location}"></p>
-	                    <form th:action="@{/theatre/details}" method="post">
-	                        <input type="hidden" name="theatreId" th:value="${theatre.theatreId}">
+	                    <h5 class="card-title" th:text="${theater.name}"></h5>
+	                    <p class="card-text" th:text="${theater.location}"></p>
+	                    <form th:action="@{/theater/details}" method="post">
+	                        <input type="hidden" name="theaterId" th:value="${theater.theaterId}">
 	                        <button type="submit" class="btn btn-primary">View Details</button>
 	                    </form>
 	                </div>

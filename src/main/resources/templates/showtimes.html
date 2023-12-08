@@ -20,7 +20,7 @@
 	        <div th:each="showtime : ${showtimes}" class="col-md-4 mb-4">
 	            <div class="card">
 	                <div class="card-body">
-	                    <h5 class="card-title" th:text="${showtime.movie.username}"></h5>
+	                    <h5 class="card-title" th:text="${movie.title}"></h5>
 	                    <p class="card-text" th:text="${showtime.startTime}"></p>
 	                    <form th:action="@{/showtime/details}" method="post">
 	                        <input type="hidden" name="showtimeId" th:value="${showtime.showtimeId}">

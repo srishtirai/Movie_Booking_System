@@ -33,6 +33,7 @@ public class TheaterController {
 	public String getTheatersPage(Model model) {
 		List<Theater> searchResults = theaterService.getAllTheaters();
 		model.addAttribute("theaters", searchResults);
+		System.out.println(searchResults.size());
 	    return "theaters";
 	}
 	
@@ -55,7 +56,7 @@ public class TheaterController {
         List<Showtime> showtimes = showtimeService.getAllShowtimesByTheater(theater);
         model.addAttribute("theater", theater);
         model.addAllAttributes(showtimes);
-        return "redirect:/theater/list";
+        return "theaterDetails";
     }
 
     @PostMapping("/edit")
@@ -63,9 +64,9 @@ public class TheaterController {
         Theater theater = theaterService.getTheaterById(id);
 
         if (theater != null) {
-            model.addAttribute("editedTheater", theater);
+            model.addAttribute("newtheater", theater);
             model.addAttribute("editMode", true);
-            return "editTheater";
+            return "addTheater";
         } else {
             return "redirect:/theater";
         }

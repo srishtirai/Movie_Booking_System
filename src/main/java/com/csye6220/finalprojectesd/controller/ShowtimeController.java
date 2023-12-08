@@ -7,11 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.csye6220.finalprojectesd.model.Movie;
 import com.csye6220.finalprojectesd.model.Showtime;
+import com.csye6220.finalprojectesd.model.Theater;
 import com.csye6220.finalprojectesd.service.MovieService;
 import com.csye6220.finalprojectesd.service.ShowtimeService;
 import com.csye6220.finalprojectesd.service.TheaterService;
@@ -36,18 +39,23 @@ public class ShowtimeController {
 	    return "showtimes";
 	}
 	
-    @GetMapping("/add")
-    public String showAddShowtimesForm(Model model) {
+	@GetMapping("/add/{theaterId}")
+    public String showAddShowtimesForm(@PathVariable Long theaterId, Model model) {
+//		Showtime showtime = new Showtime();
+//        Theater theater = new Theater();
+//        theater.setTheaterId(theaterId);
+//        showtime.setTheater(theater);
         model.addAttribute("newshowtime", new Showtime());
-        model.addAttribute("movies", movieService.getAllMovies());
         model.addAttribute("theaters", theaterService.getAllTheaters());
+        model.addAttribute("movies", movieService.getAllMovies());
         model.addAttribute("editMode", false);
         return "addShowtime";
     }
     
     @PostMapping("/add")
-    public String addShowtime(@ModelAttribute Showtime newShowtime, Model model) {
-    	showtimeService.saveShowtime(newShowtime);
+    public String addShowtime(@ModelAttribute Showtime newshowtime, Model model) {
+    	model.addAttribute("movie", movieService.getMovieById(newshowtime.getMovie().getMovieId()));
+    	showtimeService.saveShowtime(newshowtime);
         return "redirect:/showtime";
     }
 
@@ -59,7 +67,7 @@ public class ShowtimeController {
             model.addAttribute("movies", movieService.getAllMovies());
             model.addAttribute("theaters", theaterService.getAllTheaters());
             model.addAttribute("editMode", true);
-            return "editShowtime";
+            return "addShowtime";
         } else {
             return "redirect:/showtime";
         }
