@@ -71,7 +71,17 @@ public class ShowtimeController {
     public String addShowtimeToMovie(@ModelAttribute Showtime newshowtime, Model model) {
     	newshowtime.setMovie(movieService.getMovieById(newshowtime.getMovie().getMovieId()));
     	newshowtime.setTheater(theaterService.getTheaterById(newshowtime.getTheater().getTheaterId()));
+    	
     	showtimeService.saveShowtime(newshowtime);
+    	
+    	Movie movie = newshowtime.getMovie();
+    	movie.getShowtimes().add(newshowtime);
+    	movieService.updateMovie(movie);
+    	
+    	Theater theater = newshowtime.getTheater();
+    	theater.getShowtimes().add(newshowtime);
+    	theaterService.updateTheater(theater);
+    	
     	return "redirect:/movie";
     }
     
@@ -79,7 +89,17 @@ public class ShowtimeController {
     public String addShowtimeToTheater(@ModelAttribute Showtime newshowtime, Model model) {
     	newshowtime.setMovie(movieService.getMovieById(newshowtime.getMovie().getMovieId()));
     	newshowtime.setTheater(theaterService.getTheaterById(newshowtime.getTheater().getTheaterId()));
+    	
     	showtimeService.saveShowtime(newshowtime);
+    	
+    	Movie movie = newshowtime.getMovie();
+    	movie.getShowtimes().add(newshowtime);
+    	movieService.updateMovie(movie);
+    	
+    	Theater theater = newshowtime.getTheater();
+    	theater.getShowtimes().add(newshowtime);
+    	theaterService.updateTheater(theater);
+    	
     	return "redirect:/theater";
     }
 

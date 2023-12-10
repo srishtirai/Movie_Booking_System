@@ -90,10 +90,4 @@ public class Showtime {
 	public void setTotalSeats(int totalSeats) {
 		this.totalSeats = totalSeats;
 	}
-
-	@Override
-	public String toString() {
-		return "Showtime [showtimeId=" + showtimeId + ", movie=" + movie.toString() + ", theater=" + theater + ", startTime="
-				+ startTime + ", endTime=" + endTime + ", totalSeats=" + totalSeats + "]";
-	}
 }

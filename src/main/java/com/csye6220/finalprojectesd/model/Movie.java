@@ -1,8 +1,8 @@
 package com.csye6220.finalprojectesd.model;
 
 import java.time.LocalDateTime;
-
-import org.springframework.format.annotation.DateTimeFormat;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.*;
 
@@ -33,10 +33,13 @@ public class Movie {
     
     @Column(name="image_url")
     private String imageUrl;
+    
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
+    private Set<Showtime> showtimes = new HashSet<>();
 
     public Movie() {
     }
-    
+
 	public Movie(Long movieId, String title, String description, LocalDateTime releaseDate, int duration, Genre genre,
 			String cast, String language, String imageUrl) {
 		this.movieId = movieId;
@@ -121,12 +124,13 @@ public class Movie {
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
+	
+	public Set<Showtime> getShowtimes() {
+		return showtimes;
+	}
 
-	@Override
-	public String toString() {
-		return "Movie [movieId=" + movieId + ", title=" + title + ", description=" + description + ", releaseDate="
-				+ releaseDate + ", duration=" + duration + ", genre=" + genre + ", cast=" + cast + ", language="
-				+ language + ", imageUrl=" + imageUrl + "]";
+	public void setShowtimes(Set<Showtime> showtimes) {
+		this.showtimes = showtimes;
 	}
     
 }

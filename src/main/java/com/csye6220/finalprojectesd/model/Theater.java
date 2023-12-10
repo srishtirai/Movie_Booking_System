@@ -1,5 +1,8 @@
 package com.csye6220.finalprojectesd.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -22,6 +25,9 @@ public class Theater {
     private String closingTime;
     
     private int capacity;
+    
+    @OneToMany(mappedBy = "theater", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
+    private Set<Showtime> showtimes = new HashSet<>();
 
     public Theater() {
     }
@@ -73,5 +79,13 @@ public class Theater {
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}
-    
+
+	public Set<Showtime> getShowtimes() {
+		return showtimes;
+	}
+
+	public void setShowtimes(Set<Showtime> showtimes) {
+		this.showtimes = showtimes;
+	}
+   
 }
