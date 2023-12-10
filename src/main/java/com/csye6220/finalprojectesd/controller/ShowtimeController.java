@@ -33,11 +33,9 @@ public class ShowtimeController {
 	private TheaterService theaterService;
 	
 	@GetMapping
-	public String getShowtimesPage(Model model) {
-		List<Showtime> searchResults = showtimeService.getAllShowtimes();
-		model.addAttribute("showtimes", searchResults);
-	    return "showtimes";
-	}
+    public String showHomePage(Model model) {
+        return "homePage";
+    }
 	
 	@GetMapping("/add/theater/{theaterId}")
     public String showAddShowtimesForTheaterForm(@PathVariable Long theaterId, Model model) {

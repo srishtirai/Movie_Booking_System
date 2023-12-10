@@ -15,7 +15,7 @@
     <a href="/esdFinalProject/movie" class="btn btn-primary">View Movies</a>
     <div class="d-flex flex-column align-items-center justify-content-center vh-90">
 	    <h2 th:text="${editMode ? 'Edit Movie' : 'Add New Movie'}"></h2>
-		
+        
 	    <form class="text-center" th:object="${newMovie}" th:action="${editMode} ? '/esdFinalProject/movie/editSave' : '/esdFinalProject/movie/add'" method="post">
 			 <input type="hidden" th:if="${editMode}" th:field="*{movieId}"/>
 			 
@@ -36,7 +36,7 @@
 			<div class="mb-3 row">
 			    <label for="releaseDate" class="form-label col-sm-5">Release Date</label>
 			    <div class="col-sm-6">
-			        <input type="datetime-local" class="form-control" th:field="*{releaseDate}" required>
+			        <input type="date" class="form-control" name="releaseDate" th:value="${formattedReleaseDate}" required>
 			    </div>
 			</div>
 			

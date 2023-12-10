@@ -92,8 +92,9 @@ public class MovieDAOImplementation implements MovieDAO {
 	@Override
 	public List<Movie> findByMovieName(String movieName) {
 		try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM Movie WHERE title = :name", Movie.class)
-                    .setParameter("name", movieName)
+			System.out.println(movieName);
+            return session.createQuery("FROM Movie WHERE LOWER(title) LIKE LOWER(:name)", Movie.class)
+                    .setParameter("name", "%" + movieName + "%")
                     .list();
         } catch (Exception e) {
             e.printStackTrace();
@@ -106,6 +107,19 @@ public class MovieDAOImplementation implements MovieDAO {
 		try (Session session = sessionFactory.openSession()) {
 			return session.createQuery("FROM Movie WHERE genre = :genre", Movie.class)
 	                .setParameter("genre", genre)
+	                .list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+	}
+	
+	@Override
+	public List<Movie> findByGenreAndName(Genre genre, String movieName) {
+		try (Session session = sessionFactory.openSession()) {
+			return session.createQuery("FROM Movie WHERE genre = :genre and LOWER(title) LIKE LOWER(:name)", Movie.class)
+	                .setParameter("genre", genre)
+	                .setParameter("name", "%" + movieName + "%")
 	                .list();
         } catch (Exception e) {
             e.printStackTrace();

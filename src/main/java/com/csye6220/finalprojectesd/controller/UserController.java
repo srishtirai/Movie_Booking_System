@@ -87,7 +87,7 @@ public class UserController{
     @GetMapping("/users")
     public String showStaffList(@AuthenticationPrincipal UserDetails userDetails, Model model) {
     	if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))) {
-    		model.addAttribute("userList", userService.getAllUsers().stream().filter(user -> user.getRole() == UserRole.ADMIN).toList());
+    		model.addAttribute("userList", userService.getAllUsers().stream().filter(user -> user.getRole() == UserRole.STAFF || user.getRole() == UserRole.USER).toList());
     	} else {
     		model.addAttribute("userList", userService.getAllUsers().stream().filter(user -> user.getRole() == UserRole.USER).toList());
     	}

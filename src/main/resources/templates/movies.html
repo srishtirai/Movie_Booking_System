@@ -17,6 +17,27 @@
 	</head>
 	<body>
     <div th:replace="~{fragments/header :: header}"></div>
+	<div class="col-md-6"> 
+		<form th:action="@{/movie/search}" method="get" class="mb-3">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search by name" name="name" th:value="${keyword}">
+                <select class="form-select" name="genre" th:value="${genre}">
+				    <option value="" th:selected="${genre == null or genre == ''}">Select Genre</option>
+				    <option value="ACTION" th:selected="${genre == 'ACTION'}">Action</option>
+				    <option value="ANIMATION" th:selected="${genre == 'ANIMATION'}">Animation</option>
+				    <option value="COMEDY" th:selected="${genre == 'COMEDY'}">Comedy</option>
+				    <option value="DRAMA" th:selected="${genre == 'DRAMA'}">Drama</option>
+				    <option value="FICTION" th:selected="${genre == 'FICTION'}">Fiction</option>
+				    <option value="HORROR" th:selected="${genre == 'HORROR'}">Horror</option>
+				    <option value="ROMANCE" th:selected="${genre == 'ROMANCE'}">Romance</option>
+				    <option value="THRILLER" th:selected="${genre == 'THRILLER'}">Thriller</option>
+				</select>
+
+
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+	</div>  
     <a th:href="@{/movie/add}" th:if="${currentUser != null and (#strings.contains(currentUser.authorities, 'ADMIN') or #strings.contains(currentUser.authorities, 'STAFF'))}">
         <button type="button" class="btn btn-primary view-button">Add Movie</button>
     </a><br>

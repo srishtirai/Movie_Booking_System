@@ -48,7 +48,7 @@
 	                <div class="card-body">
 	                    <h5 class="card-title" th:text="${movie.title}"></h5>
 	                    <p class="card-text"><strong>Description:</strong> <span th:text="${movie.description}"></span></p>
-	                    <p class="card-text"><strong>Release Date:</strong> <span th:text="${#temporals.format(movie.releaseDate, 'yyyy-MM-dd HH:mm')}"></span></p>
+	                    <p class="card-text"><strong>Release Date:</strong> <span th:text="${#temporals.format(movie.releaseDate, 'dd-MM-yyyy')}"></span></p>
 	                    <p class="card-text"><strong>Duration:</strong> <span th:text="${movie.duration}"></span> minutes</p>
 	                    <p class="card-text"><strong>Genre:</strong> <span th:text="${movie.genre}"></span></p>
 	                    <p class="card-text"><strong>Cast:</strong> <span th:text="${movie.cast}"></span></p>
@@ -68,7 +68,7 @@
 					        <th>End Time</th>
 					        <th>Start Time</th>
 					        <th>Total seats</th>
-					        <th th:if="${currentUser != null and (#strings.contains(currentUser.authorities, 'ADMIN') or #strings.contains(currentUser.authorities, 'STAFF'))}">Actions</th>
+					        <th th:if="${currentUser != null}">Actions</th>
 				        </tr>
 			        </thead>
 			        <tbody>
@@ -88,6 +88,13 @@
 							            <button type="submit" class="btn btn-danger">Delete</button>
 							        </form>
 								</div>
+				            </td>
+				            <td th:if="${currentUser != null and (#strings.contains(currentUser.authorities, 'USER'))}">
+								<form th:action="@{/booking/add}" method="post">
+							        <input type="hidden" name="showtimeId" th:value="${showtime.showtimeId}">
+							        No of Tickets:<input type="number" name="numberOfTickets">
+						            <button type="submit" class="btn btn-primary">Book</button>
+						        </form>
 				            </td>
 				        </tr>
 				    </tbody>

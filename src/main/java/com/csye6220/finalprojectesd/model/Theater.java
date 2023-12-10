@@ -1,5 +1,6 @@
 package com.csye6220.finalprojectesd.model;
 
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,12 +20,10 @@ public class Theater {
     private String location;
     
     @Column(name="opening_time")
-    private String openingTime;
+    private LocalTime openingTime;
     
     @Column(name="closing_time")
-    private String closingTime;
-    
-    private int capacity;
+    private LocalTime closingTime;
     
     @OneToMany(mappedBy = "theater", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Showtime> showtimes = new HashSet<>();
@@ -56,29 +55,21 @@ public class Theater {
         this.location = location;
     }
 
-    public String getOpeningTime() {
+    public LocalTime getOpeningTime() {
         return openingTime;
     }
 
-    public void setOpeningTime(String openingTime) {
+    public void setOpeningTime(LocalTime openingTime) {
         this.openingTime = openingTime;
     }
 
-    public String getClosingTime() {
+    public LocalTime getClosingTime() {
         return closingTime;
     }
 
-    public void setClosingTime(String closingTime) {
+    public void setClosingTime(LocalTime closingTime) {
         this.closingTime = closingTime;
     }
-    
-	public int getCapacity() {
-		return capacity;
-	}
-
-	public void setCapacity(int capacity) {
-		this.capacity = capacity;
-	}
 
 	public Set<Showtime> getShowtimes() {
 		return showtimes;

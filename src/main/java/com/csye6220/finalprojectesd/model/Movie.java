@@ -1,6 +1,6 @@
 package com.csye6220.finalprojectesd.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +20,7 @@ public class Movie {
     private String description;
     
     @Column(name="release_date")
-    private LocalDateTime releaseDate;
+    private LocalDate releaseDate;
     
     private int duration;
     
@@ -40,7 +40,7 @@ public class Movie {
     public Movie() {
     }
 
-	public Movie(Long movieId, String title, String description, LocalDateTime releaseDate, int duration, Genre genre,
+	public Movie(Long movieId, String title, String description, LocalDate releaseDate, int duration, Genre genre,
 			String cast, String language, String imageUrl) {
 		this.movieId = movieId;
 		this.title = title;
@@ -77,11 +77,11 @@ public class Movie {
 		this.description = description;
 	}
 
-	public LocalDateTime getReleaseDate() {
+	public LocalDate getReleaseDate() {
 		return releaseDate;
 	}
 
-	public void setReleaseDate(LocalDateTime releaseDate) {
+	public void setReleaseDate(LocalDate releaseDate) {
 		this.releaseDate = releaseDate;
 	}
 

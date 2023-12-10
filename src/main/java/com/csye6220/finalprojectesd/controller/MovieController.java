@@ -1,9 +1,9 @@
 package com.csye6220.finalprojectesd.controller;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,15 +66,26 @@ public class MovieController {
             return "redirect:/movie";
         }
     }
-    
+
     @GetMapping("/search")
-    public String searchMovies(@RequestParam String keyword, @RequestParam Genre genre, Model model) {
+    public String searchMovies(@RequestParam(name = "name", required = false) String name,
+            @RequestParam(name = "genre", required = false) Genre genre,
+            Model model) {
+    	
     	List<Movie> searchResults;
-    	if(genre == null) {
-    		searchResults = movieService.findByMovieName(keyword);
-    	} else {
+    	
+    	if(!name.equals("") && genre == null) {
+    		searchResults = movieService.findByMovieName(name);
+    	} else if(genre != null && name.equals("")) {
     		searchResults = movieService.findByGenre(genre);
+    	} else if(!name.equals("") && genre != null) {
+    		searchResults = movieService.findByGenreAndName(genre, name);
+    	} else {
+    		searchResults = movieService.getAllMovies();
     	}
+    	
+    	model.addAttribute("keyword", name);
+    	model.addAttribute("genre", genre);
         model.addAttribute("movies", searchResults);
 	    return "movies";
     }
@@ -82,8 +93,12 @@ public class MovieController {
     @PostMapping("/edit")
     public String showEditMovieForm(@RequestParam("movieId") Long id, Model model) {
         Movie movie = movieService.getMovieById(id);
-
+        
         if (movie != null) {
+        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedDate = movie.getReleaseDate().format(formatter);
+            model.addAttribute("formattedReleaseDate", formattedDate);
+        	
             model.addAttribute("newMovie", movie);
             model.addAttribute("editMode", true); 
             return "addMovie";
@@ -94,7 +109,7 @@ public class MovieController {
 
     @PostMapping("/editSave")
     public String editMovie(@ModelAttribute Movie editedMovie, Model model) {
-        movieService.updateMovie(editedMovie);
+    	movieService.updateMovie(editedMovie);
         return "redirect:/movie";
     }
     

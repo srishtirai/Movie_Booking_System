@@ -32,8 +32,6 @@ public class HomePageController {
 //    	User newUser = new User("movieadmin", "movieadmin@gmail.com", passwordEncoder.encode("Srishti@99"), UserRole.ADMIN, 4134567890L);
 //    	newUser.setEnabled(true);
 //		userService.saveUser(newUser);
-        List<Movie> movies = movieService.getAllMovies();
-        model.addAttribute("movies", movies);
         return "homePage";
     }
 }

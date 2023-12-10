@@ -15,4 +15,5 @@ public interface MovieDAO {
     public List<Movie> findByMovieName(String movieName);
     public List<Movie> findByGenre(Genre genre);
     public List<Review> findReviewsByMovie(Long id);
+	public List<Movie> findByGenreAndName(Genre genre, String movieName);
 }

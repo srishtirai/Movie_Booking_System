@@ -2,6 +2,8 @@ package com.csye6220.finalprojectesd.model;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,6 +34,9 @@ public class User implements UserDetails {
     
     @Column(name="enabled")
     private Boolean enabled;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
+    private Set<Booking> bookings = new HashSet<>();
 
     public User() {
     }
@@ -124,4 +129,13 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return this.enabled;
     }
+
+	public Set<Booking> getBookings() {
+		return bookings;
+	}
+
+	public void setBookings(Set<Booking> bookings) {
+		this.bookings = bookings;
+	}
+    
 }

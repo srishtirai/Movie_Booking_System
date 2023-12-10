@@ -43,6 +43,10 @@ public class MovieService {
 	public List<Movie> findByGenre(Genre genre) {
 		return movieDAO.findByGenre(genre);
 	}
+	
+	public List<Movie> findByGenreAndName(Genre genre, String movieName) {
+		return movieDAO.findByGenreAndName(genre, movieName);
+	}
 
 	public List<Review> findReviewsByMovie(Long id) {
 		return movieDAO.findReviewsByMovie(id);

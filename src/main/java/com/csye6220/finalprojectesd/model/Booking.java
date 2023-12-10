@@ -13,11 +13,11 @@ public class Booking {
 	@Column(name="booking_id")
     private Long bookingId;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     private User user;
     
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "showtime_id")
     private Showtime showTime;
     
@@ -32,6 +32,13 @@ public class Booking {
     
 	public Booking(Long bookingId, User user, Showtime showTime, int numberOfTickets, LocalDateTime bookingDateTime) {
 		this.bookingId = bookingId;
+		this.user = user;
+		this.showTime = showTime;
+		this.numberOfTickets = numberOfTickets;
+		this.bookingDateTime = bookingDateTime;
+	}
+	
+	public Booking(User user, Showtime showTime, int numberOfTickets, LocalDateTime bookingDateTime) {
 		this.user = user;
 		this.showTime = showTime;
 		this.numberOfTickets = numberOfTickets;
