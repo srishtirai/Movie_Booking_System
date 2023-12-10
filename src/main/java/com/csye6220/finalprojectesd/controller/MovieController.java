@@ -2,6 +2,7 @@ package com.csye6220.finalprojectesd.controller;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.csye6220.finalprojectesd.model.Genre;
 import com.csye6220.finalprojectesd.model.Movie;
@@ -18,6 +20,8 @@ import com.csye6220.finalprojectesd.model.Review;
 import com.csye6220.finalprojectesd.model.Showtime;
 import com.csye6220.finalprojectesd.service.MovieService;
 import com.csye6220.finalprojectesd.service.ShowtimeService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/movie")
@@ -49,8 +53,9 @@ public class MovieController {
         return "redirect:/movie";
     }
     
-    @PostMapping("/details")
-    public String viewMovieDetails(@RequestParam("movieId") Long id, Model model) {
+    @GetMapping("/details")
+    public String viewMovieDetails(@RequestParam("movieId") Long id, Model model, HttpServletRequest request) {
+    	
         Movie movie = movieService.getMovieById(id);
         if (movie != null) {
             List<Review> reviews = movieService.findReviewsByMovie(id);
@@ -59,6 +64,11 @@ public class MovieController {
             model.addAttribute("movie", movie);
             model.addAttribute("showtimes", showtimes);
             model.addAttribute("review", reviews);
+            
+            Map<String, ?> flashAttributes = RequestContextUtils.getInputFlashMap(request);
+            if (flashAttributes != null) {
+                model.mergeAttributes(flashAttributes);
+            }
             
             return "movieDetails";
         } else {

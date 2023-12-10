@@ -21,18 +21,19 @@ public class BookingDAOImplementation implements BookingDAO {
     
 	@Override
 	public void saveBooking(Booking booking) {
-		Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.persist(booking);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
+	    Transaction transaction = null;
+	    try (Session session = sessionFactory.openSession()) {
+	        transaction = session.beginTransaction();
+	        session.merge(booking);
+	        transaction.commit();
+	    } catch (Exception e) {
+	        if (transaction != null && transaction.isActive()) {
+	            transaction.rollback();
+	        }
+	        e.printStackTrace();
+	    }
 	}
+
 
 	@Override
 	public Booking getBookingById(Long bookingId) {
@@ -50,6 +51,18 @@ public class BookingDAOImplementation implements BookingDAO {
             return session.createQuery("FROM Booking WHERE user.userId = :userId", Booking.class)
                     .setParameter("userId", userId)
                     .uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+	}
+	
+	@Override
+	public Long getBookingCountByShowtimeId(Long showtimeId) {
+		try (Session session = sessionFactory.openSession()) {
+			 return session.createQuery("SELECT SUM(b.numberOfTickets) FROM Booking b WHERE b.showTime.showtimeId = :showtimeId", Long.class)
+				        .setParameter("showtimeId", showtimeId)
+				        .getSingleResult();
         } catch (Exception e) {
             e.printStackTrace();
             return null;

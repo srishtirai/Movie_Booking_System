@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.csye6220.finalprojectesd.dao.BookingDAO;
 import com.csye6220.finalprojectesd.model.Booking;
@@ -36,6 +37,10 @@ public class BookingService {
 
 	public void deleteBooking(Booking booking) {
 		bookingDAO.deleteBooking(booking);
+	}
+	
+	public Long getBookingCountByShowtimeId(Long showtimeId) {
+		return bookingDAO.getBookingCountByShowtimeId(showtimeId);
 	}
     
 }

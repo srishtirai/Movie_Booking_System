@@ -11,4 +11,5 @@ public interface BookingDAO {
 	public List<Booking> getAllBookings();
     public void updateBooking(Booking booking);
     public void deleteBooking(Booking booking);
+	public Long getBookingCountByShowtimeId(Long showtimeId);
 }

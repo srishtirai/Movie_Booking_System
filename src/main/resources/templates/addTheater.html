@@ -36,14 +36,14 @@
 			<div class="mb-3 row">
 			    <label for="openingTime" class="form-label col-sm-5">Opening Time</label>
 			    <div class="col-sm-6">
-			        <input type="text" class="form-control" th:field="*{openingTime}" required>
+			        <input type="time" class="form-control" name="openingTime" th:value="${formattedOpeningTime}" required>
 			    </div>
 			</div>
 			
 			<div class="mb-3 row">
 			    <label for="closingTime" class="form-label col-sm-5">Closing Time</label>
 			    <div class="col-sm-6">
-			        <input type="text" class="form-control" th:field="*{closingTime}" required>
+			        <input type="time" class="form-control" name="closingTime" th:value="${formattedClosingTime}" required>
 			    </div>
 			</div>
 			

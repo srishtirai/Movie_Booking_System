@@ -52,6 +52,12 @@
 	            <br>
 	            <h5 class="card-title">Showtimes: </h5>
 	            <br>
+	            <div th:if="${error}" class="mb-3">
+			        <p class="alert alert-danger" th:text="${error}"></p>
+			    </div>
+			    <div th:if="${success}" class="mb-3">
+			        <p class="alert alert-success" th:text="${success}"></p>
+			    </div>
 	            <a th:href= "@{'/showtime/add/theater/' + ${theater.theaterId}}" th:if="${currentUser != null and (#strings.contains(currentUser.authorities, 'ADMIN') or #strings.contains(currentUser.authorities, 'STAFF'))}">
 			        <button type="button" class="btn btn-primary view-button">Add Showtime</button>
 			    </a><br><br>
@@ -62,7 +68,7 @@
 					        <th>End Time</th>
 					        <th>Start Time</th>
 					        <th>Total seats</th>
-					        <th th:if="${currentUser != null and (#strings.contains(currentUser.authorities, 'ADMIN') or #strings.contains(currentUser.authorities, 'STAFF'))}">Actions</th>
+					         <th th:if="${currentUser != null}">Actions</th>
 					    </tr>
 			        </thead>
 			        <tbody>
@@ -82,6 +88,13 @@
 							            <button type="submit" class="btn btn-danger">Delete</button>
 							        </form>
 						        </div>
+				            </td>
+				            <td th:if="${currentUser != null and (#strings.contains(currentUser.authorities, 'USER'))}">
+								<form th:action="@{/booking/add}" method="post">
+							        <input type="hidden" name="showtimeId" th:value="${showtime.showtimeId}">
+							        No of Tickets:<input type="number" name="numberOfTickets">
+						            <button type="submit" class="btn btn-primary">Book</button>
+						        </form>
 				            </td>
 				        </tr>
 			       </tbody>

@@ -32,8 +32,6 @@
 				    <option value="ROMANCE" th:selected="${genre == 'ROMANCE'}">Romance</option>
 				    <option value="THRILLER" th:selected="${genre == 'THRILLER'}">Thriller</option>
 				</select>
-
-
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </form>
@@ -50,10 +48,7 @@
 	                <div class="card-body">
 	                    <h5 class="card-title" th:text="${movie.title}"></h5>
 	                    Genre: <p class="card-text" th:text="${movie.genre}"></p>
-	                    <form th:action="@{/movie/details}" method="post">
-	                        <input type="hidden" name="movieId" th:value="${movie.movieId}">
-	                        <button type="submit" class="btn btn-primary">View Details</button>
-	                    </form>
+	                    <a th:href="@{/movie/details(movieId=${movie.movieId})}" class="btn btn-primary">View Details</a>
 	                </div>
 	            </div>
 	        </div>

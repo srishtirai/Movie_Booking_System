@@ -5,6 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @ControllerAdvice
 public class GlobalControllerAdvice {
 
@@ -12,4 +14,15 @@ public class GlobalControllerAdvice {
     public UserDetails getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
         return userDetails;
     }
+    
+    public static String redirectToReferrer(HttpServletRequest request) {
+        String referrer = request.getHeader("referer");
+
+        if (referrer != null && !referrer.isEmpty()) {
+            return "redirect:" + referrer;
+        } else {
+            return "redirect:/";
+        }
+    }
+
 }

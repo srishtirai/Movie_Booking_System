@@ -43,14 +43,14 @@
 	        <div class="mb-3 row">
 	            <label for="startTime" class="form-label col-sm-5">Start Time:</label>
 	            <div class="col-sm-6">
-	                <input type="datetime-local" class="form-control" th:field="*{startTime}" required>
+	                <input type="datetime-local" class="form-control" name="startTime" th:value="${formattedStartDate}" required>
 	            </div>
 	        </div>
 	
 	        <div class="mb-3 row">
 	            <label for="endTime" class="form-label col-sm-5">End Time:</label>
 	            <div class="col-sm-6">
-	                <input type="datetime-local" class="form-control" th:field="*{endTime}" required>
+	                <input type="datetime-local" class="form-control" name="endTime" th:value="${formattedEndDate}" required>
 	            </div>
 	        </div>
 	

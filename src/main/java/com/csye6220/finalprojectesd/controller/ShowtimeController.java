@@ -1,6 +1,6 @@
 package com.csye6220.finalprojectesd.controller;
 
-import java.util.List;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -106,6 +106,12 @@ public class ShowtimeController {
         Showtime showtime = showtimeService.getShowtimeById(id);
         
         if (showtime != null) {
+        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+            String formattedStartDate = showtime.getStartTime().format(formatter);
+            model.addAttribute("formattedStartDate", formattedStartDate);
+            String formattedEndDate = showtime.getEndTime().format(formatter);
+            model.addAttribute("formattedEndDate", formattedEndDate);
+        	
             model.addAttribute("newshowtime", showtime);
             model.addAttribute("movies", movieService.getAllMovies());
             model.addAttribute("theaters", theaterService.getAllTheaters());
@@ -123,6 +129,12 @@ public class ShowtimeController {
         Showtime showtime = showtimeService.getShowtimeById(id);
         
         if (showtime != null) {
+        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+            String formattedStartDate = showtime.getStartTime().format(formatter);
+            model.addAttribute("formattedStartDate", formattedStartDate);
+            String formattedEndDate = showtime.getEndTime().format(formatter);
+            model.addAttribute("formattedEndDate", formattedEndDate);
+            
             model.addAttribute("newshowtime", showtime);
             model.addAttribute("movies", movieService.getAllMovies());
             model.addAttribute("theaters", theaterService.getAllTheaters());

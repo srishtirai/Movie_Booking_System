@@ -1,6 +1,8 @@
 package com.csye6220.finalprojectesd.controller;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.csye6220.finalprojectesd.model.Movie;
 import com.csye6220.finalprojectesd.model.Review;
@@ -18,6 +21,8 @@ import com.csye6220.finalprojectesd.model.Showtime;
 import com.csye6220.finalprojectesd.model.Theater;
 import com.csye6220.finalprojectesd.service.ShowtimeService;
 import com.csye6220.finalprojectesd.service.TheaterService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/theater")
@@ -50,12 +55,18 @@ public class TheaterController {
         return "redirect:/theater";
     }
     
-    @PostMapping("/details")
-    public String viewTheaterDetails(@RequestParam("theaterId") Long id, Model model) {
+    @GetMapping("/details")
+    public String viewTheaterDetails(@RequestParam("theaterId") Long id, Model model, HttpServletRequest request) {
         Theater theater = theaterService.getTheaterById(id);
         List<Showtime> showtimes = showtimeService.getAllShowtimesByTheater(theater);
         model.addAttribute("theater", theater);
         model.addAttribute("showtimes", showtimes);
+        
+        Map<String, ?> flashAttributes = RequestContextUtils.getInputFlashMap(request);
+        if (flashAttributes != null) {
+            model.mergeAttributes(flashAttributes);
+        }
+        
         return "theaterDetails";
     }
 
@@ -64,6 +75,12 @@ public class TheaterController {
         Theater theater = theaterService.getTheaterById(id);
 
         if (theater != null) {
+        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm");
+            String formattedOpeningTime = theater.getOpeningTime().format(formatter);
+            model.addAttribute("formattedOpeningTime", formattedOpeningTime);
+            String formattedClosingTime = theater.getClosingTime().format(formatter);
+            model.addAttribute("formattedClosingTime", formattedClosingTime);
+        	
             model.addAttribute("newtheater", theater);
             model.addAttribute("editMode", true);
             return "addTheater";
