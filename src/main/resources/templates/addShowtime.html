@@ -16,22 +16,25 @@
     <div class="d-flex flex-column align-items-center justify-content-center vh-90">
 	    <h2 th:text="${editMode ? 'Edit Showtime' : 'Add New Showtime'}"></h2>
 		
-	    <form class="text-center" th:object="${newshowtime}" th:action="${editMode} ? '/esdFinalProject/showtime/editSave' : '/esdFinalProject/showtime/add'" method="post">
+	    <form class="text-center" th:object="${newshowtime}" 
+	    	th:action="@{${editMode} ? '/showtime/editSave/' + ${showTimeFor} : '/showtime/add/' + ${showTimeFor}}"
+	    	method="post">
 			 <input type="hidden" th:if="${editMode}" th:field="*{showtimeId}"/>
 			 
 	         <div class="mb-3 row">
+				<input type="hidden" th:field="*{movie.movieId}" th:if="${showTimeFor == 'movie'}"/>
 	            <label for="movie" class="form-label col-sm-5">Movie:</label>
 	            <div class="col-sm-6">
-	                <select class="form-control" th:field="*{movie.movieId}" required>
+	                <select class="form-control" th:field="*{movie.movieId}" required th:disabled="${showTimeFor == 'movie'}">
 	                    <option th:each="movie : ${movies}" th:value="${movie.movieId}" th:text="${movie.title}"></option>
 	                </select>
 	            </div>
 	        </div>
-	<!--th:disabled="${newshowtime.theater != null}"-->
 	        <div class="mb-3 row">
+				<input type="hidden" th:field="*{theater.theaterId}" th:if="${showTimeFor == 'theater'}"/>
 	            <label for="theater" class="form-label col-sm-5">Theater:</label>
 	            <div class="col-sm-6">
-	                 <select class="form-control" th:field="*{theater.theaterId}" required >
+	                 <select class="form-control" th:field="*{theater.theaterId}" required th:disabled="${showTimeFor == 'theater'}">
 			            <option th:each="theater : ${theaters}" th:value="${theater.theaterId}" th:text="${theater.name}"></option>
 			        </select>
 	            </div>

@@ -55,7 +55,7 @@ public class TheaterController {
         Theater theater = theaterService.getTheaterById(id);
         List<Showtime> showtimes = showtimeService.getAllShowtimesByTheater(theater);
         model.addAttribute("theater", theater);
-        model.addAllAttributes(showtimes);
+        model.addAttribute("showtimes", showtimes);
         return "theaterDetails";
     }
 

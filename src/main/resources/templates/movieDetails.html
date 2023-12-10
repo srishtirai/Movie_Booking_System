@@ -9,26 +9,41 @@
 	    <title>Movies</title>
 	    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 	    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+	    <style>
+		    .button-container {
+		        margin-right: 10px;
+		    }
+		    .view-button {
+				margin-left: 20px;
+			}
+		</style>
 	</head>
 	<body>
     <div th:replace="~{fragments/header :: header}"></div>
-    <a href="/esdFinalProject/movie" class="btn btn-primary">View Movies</a>
+    <a href="/esdFinalProject/movie" class="btn btn-primary view-button">View Movies</a>
     <div class="container mt-5">
 		<div class="row" th:if="${currentUser != null and (#strings.contains(currentUser.authorities, 'ADMIN') or #strings.contains(currentUser.authorities, 'STAFF'))}">
-			<form th:action="@{/movie/edit}" method="post">
-			    <input type="hidden" name="movieId" th:value="${movie.movieId}">
-			    <button type="submit" class="btn btn-primary">Edit</button>
-			</form>
-			<form th:action="@{/movie/delete}" method="post">
-			    <input type="hidden" name="movieId" th:value="${movie.movieId}">
-			    <button type="submit" class="btn btn-danger">Delete</button>
-			</form>
+		    <div class="d-flex">
+		        <div class="button-container">
+		            <form th:action="@{/movie/edit}" method="post">
+		                <input type="hidden" name="movieId" th:value="${movie.movieId}">
+		                <button type="submit" class="btn btn-primary">Edit</button>
+		            </form>
+		        </div>
+		        <div>
+		            <form th:action="@{/movie/delete}" method="post">
+		                <input type="hidden" name="movieId" th:value="${movie.movieId}">
+		                <button type="submit" class="btn btn-danger">Delete</button>
+		            </form>
+		        </div>
+		    </div>
 		</div>
+		<br>
 	    <div class="row">
-	        <div class="col-md-4">
+	        <div class="col-md-3">
 	            <img th:src="${movie.imageUrl}" class="img-fluid" alt="Movie Image">
 	        </div>
-	        <div class="col-md-8">
+	        <div class="col-md-9">
 	            <div class="card">
 	                <div class="card-body">
 	                    <h5 class="card-title" th:text="${movie.title}"></h5>
@@ -40,6 +55,43 @@
 	                    <p class="card-text"><strong>Language:</strong> <span th:text="${movie.language}"></span></p>
 	                </div>
 	            </div>
+	            <br>
+	            <h5 class="card-title">Showtimes: </h5><br>
+	            <a th:href= "@{'/showtime/add/movie/' + ${movie.movieId}}" th:if="${currentUser != null and (#strings.contains(currentUser.authorities, 'ADMIN') or #strings.contains(currentUser.authorities, 'STAFF'))}">
+			        <button type="button" class="btn btn-primary view-button">Add Showtime</button>
+			    </a><br>
+	            <br>
+	            <table class="table table-bordered">
+					<thead>
+					  	<tr>
+					     	<th>Thaeter</th>
+					        <th>End Time</th>
+					        <th>Start Time</th>
+					        <th>Total seats</th>
+					        <th th:if="${currentUser != null and (#strings.contains(currentUser.authorities, 'ADMIN') or #strings.contains(currentUser.authorities, 'STAFF'))}">Actions</th>
+				        </tr>
+			        </thead>
+			        <tbody>
+						<tr th:each="showtime : ${showtimes}">
+					        <td th:text="${showtime.theater.name}"></td>
+				            <td th:text="${showtime.startTime}"></td>
+				            <td th:text="${showtime.endTime}"></td>
+				            <td th:text="${showtime.totalSeats}"></td>
+				            <td th:if="${currentUser != null and (#strings.contains(currentUser.authorities, 'ADMIN') or #strings.contains(currentUser.authorities, 'STAFF'))}">
+								<div class="d-flex">
+									<form th:action="@{/showtime/edit/movie}" method="post">
+							            <input type="hidden" name="showtimeId" th:value="${showtime.showtimeId}">
+							            <button type="submit" class="btn btn-primary button-container">Edit</button>
+							        </form>
+							        <form th:action="@{/showtime/delete/movie}" method="post">
+							            <input type="hidden" name="showtimeId" th:value="${showtime.showtimeId}">
+							            <button type="submit" class="btn btn-danger">Delete</button>
+							        </form>
+								</div>
+				            </td>
+				        </tr>
+				    </tbody>
+				 </table>
 	        </div>
 	    </div>
 	</div>

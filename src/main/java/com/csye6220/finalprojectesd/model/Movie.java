@@ -121,5 +121,12 @@ public class Movie {
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
+
+	@Override
+	public String toString() {
+		return "Movie [movieId=" + movieId + ", title=" + title + ", description=" + description + ", releaseDate="
+				+ releaseDate + ", duration=" + duration + ", genre=" + genre + ", cast=" + cast + ", language="
+				+ language + ", imageUrl=" + imageUrl + "]";
+	}
     
 }

@@ -52,12 +52,14 @@ public class MovieController {
     @PostMapping("/details")
     public String viewMovieDetails(@RequestParam("movieId") Long id, Model model) {
         Movie movie = movieService.getMovieById(id);
-        List<Review> reviews = movieService.findReviewsByMovie(id);
-        List<Showtime> showtimes = showtimeService.getAllShowtimesByMovie(movie);
         if (movie != null) {
+            List<Review> reviews = movieService.findReviewsByMovie(id);
+            List<Showtime> showtimes = showtimeService.getAllShowtimesByMovie(movie);
+            
             model.addAttribute("movie", movie);
-            model.addAllAttributes(reviews);
-            model.addAllAttributes(showtimes);
+            model.addAttribute("showtimes", showtimes);
+            model.addAttribute("review", reviews);
+            
             return "movieDetails";
         } else {
         	model.addAttribute("movie", movie);

@@ -13,11 +13,11 @@ public class Showtime {
 	@Column(name="showtime_id")
     private Long showtimeId;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "movie_id")
     private Movie movie;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "theater_id")
     private Theater theater;
     
@@ -91,4 +91,9 @@ public class Showtime {
 		this.totalSeats = totalSeats;
 	}
 
+	@Override
+	public String toString() {
+		return "Showtime [showtimeId=" + showtimeId + ", movie=" + movie.toString() + ", theater=" + theater + ", startTime="
+				+ startTime + ", endTime=" + endTime + ", totalSeats=" + totalSeats + "]";
+	}
 }
