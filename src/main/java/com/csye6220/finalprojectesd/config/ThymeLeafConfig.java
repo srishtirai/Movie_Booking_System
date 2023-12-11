@@ -15,7 +15,7 @@ public class ThymeLeafConfig implements WebMvcConfigurer {
 
     @Bean
     @Description("Template resolver for ThymeLeaf")
-    public ClassLoaderTemplateResolver templateResolver(){
+    ClassLoaderTemplateResolver templateResolver(){
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
 
         templateResolver.setPrefix("/templates/");
@@ -27,7 +27,7 @@ public class ThymeLeafConfig implements WebMvcConfigurer {
 
     @Bean
     @Description("Template engine for ThymeLeaf")
-    public SpringTemplateEngine templateEngine(){
+    SpringTemplateEngine templateEngine(){
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
         return templateEngine;
@@ -35,7 +35,7 @@ public class ThymeLeafConfig implements WebMvcConfigurer {
 
     @Bean
     @Description("View resolver for ThymeLeaf")
-    public ThymeleafViewResolver viewResolver(){
+    ThymeleafViewResolver viewResolver(){
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
         viewResolver.setOrder(1);

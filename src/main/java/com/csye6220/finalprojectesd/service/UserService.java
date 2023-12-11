@@ -67,37 +67,3 @@ public class UserService implements UserDetailsService {
     }
 }
 
-//@Component
-//public class CustomAuthenticationProvider implements AuthenticationProvider {
-//
-//    private final UserService userService;
-//
-//    @Autowired
-//    public CustomAuthenticationProvider(UserService userService) {
-//        this.userService = userService;
-//    }
-//
-//    @Override
-//    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-//        String username = authentication.getName();
-//        String password = authentication.getCredentials().toString();
-//
-//        UserDetails userDetails = userService.loadUserByUsername(username);
-//
-//        if (userDetails == null) {
-//            throw new BadCredentialsException("User not found");
-//        }
-//
-//        if (!password.equals(userDetails.getPassword())) {
-//            throw new BadCredentialsException("Invalid password");
-//        }
-//
-//        return new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());
-//    }
-//
-//    @Override
-//    public boolean supports(Class<?> authentication) {
-//        return authentication.equals(UsernamePasswordAuthenticationToken.class);
-//    }
-//}
-

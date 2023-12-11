@@ -37,145 +37,88 @@ public class ShowtimeController {
         return "homePage";
     }
 	
-	@GetMapping("/add/theater/{theaterId}")
-    public String showAddShowtimesForTheaterForm(@PathVariable Long theaterId, Model model) {
-		Showtime showtime = new Showtime();
-		showtime.setTheater(theaterService.getTheaterById(theaterId));
-		
-        model.addAttribute("newshowtime", showtime);
-        model.addAttribute("theaters", theaterService.getAllTheaters());
-        model.addAttribute("movies", movieService.getAllMovies());
-        model.addAttribute("editMode", false);
-        model.addAttribute("showTimeFor", "theater");
-        
-        return "addShowtime";
-    }
-	
-	@GetMapping("/add/movie/{movieId}")
-    public String showAddShowtimesForMovieForm(@PathVariable Long movieId, Model model) {
-		Showtime showtime = new Showtime();
-		showtime.setMovie(movieService.getMovieById(movieId));
-		
-        model.addAttribute("newshowtime", showtime);
-        model.addAttribute("theaters", theaterService.getAllTheaters());
-        model.addAttribute("movies", movieService.getAllMovies());
-        model.addAttribute("editMode", false);
-        model.addAttribute("showTimeFor", "movie");
-        
-        return "addShowtime";
-    }
-    
-    @PostMapping("/add/movie")
-    public String addShowtimeToMovie(@ModelAttribute Showtime newshowtime, Model model) {
-    	newshowtime.setMovie(movieService.getMovieById(newshowtime.getMovie().getMovieId()));
-    	newshowtime.setTheater(theaterService.getTheaterById(newshowtime.getTheater().getTheaterId()));
-    	
-    	showtimeService.saveShowtime(newshowtime);
-    	
-    	Movie movie = newshowtime.getMovie();
-    	movie.getShowtimes().add(newshowtime);
-    	movieService.updateMovie(movie);
-    	
-    	Theater theater = newshowtime.getTheater();
-    	theater.getShowtimes().add(newshowtime);
-    	theaterService.updateTheater(theater);
-    	
-    	return "redirect:/movie";
-    }
-    
-    @PostMapping("/add/theater")
-    public String addShowtimeToTheater(@ModelAttribute Showtime newshowtime, Model model) {
-    	newshowtime.setMovie(movieService.getMovieById(newshowtime.getMovie().getMovieId()));
-    	newshowtime.setTheater(theaterService.getTheaterById(newshowtime.getTheater().getTheaterId()));
-    	
-    	showtimeService.saveShowtime(newshowtime);
-    	
-    	Movie movie = newshowtime.getMovie();
-    	movie.getShowtimes().add(newshowtime);
-    	movieService.updateMovie(movie);
-    	
-    	Theater theater = newshowtime.getTheater();
-    	theater.getShowtimes().add(newshowtime);
-    	theaterService.updateTheater(theater);
-    	
-    	return "redirect:/theater";
-    }
+	@GetMapping("/add/{type}/{id}")
+	public String showAddShowtimesForm(@PathVariable String type, @PathVariable Long id, Model model) {
+	    Showtime showtime = new Showtime();
 
-    @PostMapping("/edit/movie")
-    public String showEditShowtimeForMovieForm(@RequestParam("showtimeId") Long id, Model model) {
-        Showtime showtime = showtimeService.getShowtimeById(id);
-        
-        if (showtime != null) {
-        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-            String formattedStartDate = showtime.getStartTime().format(formatter);
-            model.addAttribute("formattedStartDate", formattedStartDate);
-            String formattedEndDate = showtime.getEndTime().format(formatter);
-            model.addAttribute("formattedEndDate", formattedEndDate);
-        	
-            model.addAttribute("newshowtime", showtime);
-            model.addAttribute("movies", movieService.getAllMovies());
-            model.addAttribute("theaters", theaterService.getAllTheaters());
-            model.addAttribute("editMode", true);
-            model.addAttribute("showTimeFor", "movie");
-            
-            return "addShowtime";
-        } else {
-            return "redirect:/showtime";
-        }
-    }
-    
-    @PostMapping("/edit/theater")
-    public String showEditShowtimeForTheaterForm(@RequestParam("showtimeId") Long id, Model model) {
-        Showtime showtime = showtimeService.getShowtimeById(id);
-        
-        if (showtime != null) {
-        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-            String formattedStartDate = showtime.getStartTime().format(formatter);
-            model.addAttribute("formattedStartDate", formattedStartDate);
-            String formattedEndDate = showtime.getEndTime().format(formatter);
-            model.addAttribute("formattedEndDate", formattedEndDate);
-            
-            model.addAttribute("newshowtime", showtime);
-            model.addAttribute("movies", movieService.getAllMovies());
-            model.addAttribute("theaters", theaterService.getAllTheaters());
-            model.addAttribute("editMode", true);
-            model.addAttribute("showTimeFor", "theater");
-            
-            return "addShowtime";
-        } else {
-            return "redirect:/showtime";
-        }
-    }
+	    if ("theater".equals(type)) {
+	        showtime.setTheater(theaterService.getTheaterById(id));
+	        model.addAttribute("showTimeFor", "theater");
+	    } else if ("movie".equals(type)) {
+	        showtime.setMovie(movieService.getMovieById(id));
+	        model.addAttribute("showTimeFor", "movie");
+	    }
 
-    @PostMapping("/editSave/movie")
-    public String editShowtimeForMovie(@ModelAttribute("newshowtime") Showtime editedShowtime, Model model) {
-    	editedShowtime.setMovie(movieService.getMovieById(editedShowtime.getMovie().getMovieId()));
-    	editedShowtime.setTheater(theaterService.getTheaterById(editedShowtime.getTheater().getTheaterId()));
-    	showtimeService.updateShowtime(editedShowtime);
-        return "redirect:/movie";
-    }
-    
-    @PostMapping("/editSave/theater")
-    public String editShowtimeForTheater(@ModelAttribute("newshowtime") Showtime editedShowtime, Model model) {
-    	editedShowtime.setMovie(movieService.getMovieById(editedShowtime.getMovie().getMovieId()));
-    	editedShowtime.setTheater(theaterService.getTheaterById(editedShowtime.getTheater().getTheaterId()));
-    	showtimeService.updateShowtime(editedShowtime);
-        return "redirect:/theater";
-    }
+	    model.addAttribute("newshowtime", showtime);
+	    model.addAttribute("theaters", theaterService.getAllTheaters());
+	    model.addAttribute("movies", movieService.getAllMovies());
+	    model.addAttribute("editMode", false);
 
-    @PostMapping("/delete/movie")
-    public String deleteMovieShowtime(@RequestParam("showtimeId") Long id) {
-    	Showtime showtime = showtimeService.getShowtimeById(id);
-    	showtimeService.deleteShowtime(showtime);
-        return "redirect:/movie";
-    }
+	    return "addShowtime";
+	}
     
-    @PostMapping("/delete/theater")
-    public String deleteTheaterShowtime(@RequestParam("showtimeId") Long id) {
-    	Showtime showtime = showtimeService.getShowtimeById(id);
-    	showtimeService.deleteShowtime(showtime);
-        return "redirect:/theater";
-    }
+	@PostMapping("/add/{type}")
+	public String addShowtime(@ModelAttribute Showtime newshowtime, @PathVariable String type, Model model) {
+	    newshowtime.setMovie(movieService.getMovieById(newshowtime.getMovie().getMovieId()));
+	    newshowtime.setTheater(theaterService.getTheaterById(newshowtime.getTheater().getTheaterId()));
+
+	    showtimeService.saveShowtime(newshowtime);
+
+	    Movie movie = newshowtime.getMovie();
+	    movie.getShowtimes().add(newshowtime);
+	    movieService.updateMovie(movie);
+
+	    Theater theater = newshowtime.getTheater();
+	    theater.getShowtimes().add(newshowtime);
+	    theaterService.updateTheater(theater);
+
+	    return type.equals("movie") ? "redirect:/movie/details?movieId=" + movie.getMovieId() : "redirect:/theater/details?theaterId=" + theater.getTheaterId();
+	}
+
+	@PostMapping("/edit/{type}")
+	public String showEditShowtimeForm(@RequestParam("showtimeId") Long id, @PathVariable String type, Model model) {
+	    Showtime showtime = showtimeService.getShowtimeById(id);
+
+	    if (showtime != null) {
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+	        String formattedStartDate = showtime.getStartTime().format(formatter);
+	        model.addAttribute("formattedStartDate", formattedStartDate);
+	        String formattedEndDate = showtime.getEndTime().format(formatter);
+	        model.addAttribute("formattedEndDate", formattedEndDate);
+
+	        model.addAttribute("newshowtime", showtime);
+	        model.addAttribute("movies", movieService.getAllMovies());
+	        model.addAttribute("theaters", theaterService.getAllTheaters());
+	        model.addAttribute("editMode", true);
+	        model.addAttribute("showTimeFor", type);
+
+	        return "addShowtime";
+	    } else {
+	        return "redirect:/showtime";
+	    }
+	}
+
+	@PostMapping("/editSave/{type}")
+	public String editShowtime(@ModelAttribute("newshowtime") Showtime editedShowtime, @PathVariable String type, Model model) {
+		Long movieId = editedShowtime.getMovie().getMovieId();
+		Long theaterId = editedShowtime.getTheater().getTheaterId();
+	    editedShowtime.setMovie(movieService.getMovieById(movieId));
+	    editedShowtime.setTheater(theaterService.getTheaterById(theaterId));
+	    showtimeService.updateShowtime(editedShowtime);
+
+	    return type.equals("movie") ? "redirect:/movie/details?movieId=" + movieId : "redirect:/theater/details?theaterId=" + theaterId;
+	}
+
+	@PostMapping("/delete/{type}")
+	public String deleteShowtime(@RequestParam("showtimeId") Long id, @PathVariable String type) {
+		Long movieId = showtimeService.getShowtimeById(id).getMovie().getMovieId();
+		Long theaterId = showtimeService.getShowtimeById(id).getTheater().getTheaterId();
+	    Showtime showtime = showtimeService.getShowtimeById(id);
+	    showtimeService.deleteShowtime(showtime);
+	    
+	    return type.equals("movie") ? "redirect:/movie/details?movieId=" + movieId : "redirect:/theater/details?theaterId=" + theaterId;
+	}
+
 
 }
 
