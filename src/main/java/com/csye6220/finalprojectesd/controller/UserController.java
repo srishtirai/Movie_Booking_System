@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.csye6220.finalprojectesd.model.Email;
 import com.csye6220.finalprojectesd.model.User;
 import com.csye6220.finalprojectesd.model.UserRole;
+import com.csye6220.finalprojectesd.service.EmailService;
 import com.csye6220.finalprojectesd.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,6 +30,9 @@ public class UserController{
     
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
+    @Autowired 
+	private EmailService emailService;
 	
     @ModelAttribute("allRoles")
     public UserRole[] getAllRoles() {
@@ -41,7 +46,7 @@ public class UserController{
     }
     
     @PostMapping("/login")
-    public String login() {;
+    public String login() {
     	return "redirect:/";
     }
     
@@ -63,6 +68,16 @@ public class UserController{
     		User newUser = new User(userid, username, passwordEncoder.encode(password), roleValue, 123456789L);
     		newUser.setEnabled(role.equals("USER"));
     		userService.saveUser(newUser);
+    		
+    		String emailBody = "Dear " + userid + ",\n\n"
+			        + "Thank you for registering with us.\n\n"
+			        + "You will be able to Login once your account has been verified by our Admin.\n\n"
+			        + "We look forward to working with you!\n\n"
+			        + "Best regards,\nYour Movie Booking Team";
+    		
+    		Email emailDetails = new Email(username, "Email Registeration Successful", emailBody);
+	        emailService.sendSimpleMail(emailDetails);
+    		
     		redirectAttributes.addFlashAttribute("success", "Email registeration is complete. Login to continue.");
     		return "redirect:/login";
     	}
@@ -95,6 +110,16 @@ public class UserController{
     	User user = userService.getUserById(userId);
     	user.setEnabled(true);
     	userService.updateUser(user);
+    	
+    	String emailBody = "Dear " + user.getUsername() + ",\n\n"
+		        + "Thank you for registering with us.\n\n"
+		        + "Your account has been verified by our Admin. You will now able to login.\n\n"
+		        + "We look forward to working with you!\n\n"
+		        + "Best regards,\nYour Movie Booking Team";
+		
+		Email emailDetails = new Email(user.getEmail(), "Email Registeration Approved", emailBody);
+        emailService.sendSimpleMail(emailDetails);
+        
         return "redirect:/users";
     }
 

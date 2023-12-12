@@ -9,14 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import com.csye6220.finalprojectesd.model.Movie;
-import com.csye6220.finalprojectesd.model.Review;
 import com.csye6220.finalprojectesd.model.Showtime;
 import com.csye6220.finalprojectesd.model.Theater;
 import com.csye6220.finalprojectesd.service.ShowtimeService;

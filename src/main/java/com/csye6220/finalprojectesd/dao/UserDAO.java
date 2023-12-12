@@ -2,7 +2,6 @@ package com.csye6220.finalprojectesd.dao;
 
 import java.util.List;
 
-import com.csye6220.finalprojectesd.model.Movie;
 import com.csye6220.finalprojectesd.model.Review;
 import com.csye6220.finalprojectesd.model.User;
 import com.csye6220.finalprojectesd.model.UserRole;
