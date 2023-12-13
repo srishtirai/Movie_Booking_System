@@ -33,5 +33,9 @@ public class TheaterService {
     public void deleteTheater(Long id) {
     	theaterDAO.deleteTheater(id);
     }
+    
+    public List<Theater> searchTheatersByNameOrMovieAvailability(String searchTerm) {
+    	return theaterDAO.searchTheatersByNameOrMovieAvailability(searchTerm);
+    }
 	
 }

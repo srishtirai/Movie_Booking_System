@@ -15,7 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.csye6220.finalprojectesd.model.Booking;
 import com.csye6220.finalprojectesd.model.Email;
-import com.csye6220.finalprojectesd.model.Movie;
 import com.csye6220.finalprojectesd.model.Showtime;
 import com.csye6220.finalprojectesd.model.User;
 import com.csye6220.finalprojectesd.service.BookingService;
@@ -59,7 +58,7 @@ public class BookingController {
 		if(remainingSeats == 0) {
 			redirectAttributes.addFlashAttribute("error", "No seats available. Sorry we are filled !!");
 		} else if(numberOfTickets > remainingSeats) {
-			redirectAttributes.addFlashAttribute("error", "Booking failed !! Only " + remainingSeats + " tickets are available");
+			redirectAttributes.addFlashAttribute("error", "Booking failed !! Only " + remainingSeats + " tickets are available.");
 		} else {
 			Showtime showtime = showtimeService.getShowtimeById(showtimeId);
 			
@@ -70,19 +69,7 @@ public class BookingController {
 			booking.setBookingDateTime(LocalDateTime.now());
 			bookingService.saveBooking(booking);
 			
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-			
-			String emailBody = "Dear " + user.getUsername() + ",\n\n"
-			        + "Thank you for booking tickets with us. Here are your booking details:\n\n"
-			        + "Movie: " + showtime.getMovie().getTitle() + "\n"
-			        + "Show Time: " + showtime.getStartTime().format(formatter) + "\n"
-			        + "Number of Tickets: " + booking.getNumberOfTickets() + "\n"
-			        + "Booking Date and Time: " + booking.getBookingDateTime().format(formatter) + "\n\n"
-			        + "We look forward to seeing you at the movie!\n\n"
-			        + "Best regards,\nYour Movie Booking Team";
-			
-			Email emailDetails = new Email(user.getEmail(), "Movie Booking Successful", emailBody);
-	        emailService.sendSimpleMail(emailDetails);
+			emailService.sendBookingConfirmationEmail(user, showtime, booking);
 			
 			redirectAttributes.addFlashAttribute("success", "Booking successfull !!");
 		}

@@ -8,14 +8,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.csye6220.finalprojectesd.model.Email;
+import com.csye6220.finalprojectesd.model.PasswordUpdate;
 import com.csye6220.finalprojectesd.model.User;
 import com.csye6220.finalprojectesd.model.UserRole;
 import com.csye6220.finalprojectesd.service.EmailService;
@@ -76,15 +77,7 @@ public class UserController{
     		user.setPassword(passwordEncoder.encode(user.getPassword()));
 
     		userService.saveUser(user);
-    		
-    		String emailBody = "Dear " + user.getUsername() + ",\n\n"
-			        + "Thank you for registering with us.\n\n"
-			        + "You will be able to Login once your account has been verified by our Admin.\n\n"
-			        + "We look forward to working with you!\n\n"
-			        + "Best regards,\nYour Movie Booking Team";
-    		
-    		Email emailDetails = new Email(user.getEmail(), "Email Registeration Successful", emailBody);
-	        emailService.sendSimpleMail(emailDetails);
+    		emailService.sendStaffAccountCreationConfirmationEmail(user);
     		
     		redirectAttributes.addFlashAttribute("success", "Email registeration is complete. Login to continue.");
     		return "redirect:/login";
@@ -93,14 +86,74 @@ public class UserController{
     
     @GetMapping("/profile")
     public String showUserProfile(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+    	model.addAttribute("passwordUpdate", new PasswordUpdate());
     	model.addAttribute("user", userDetails);
         return "profile";
     }
 
     @PostMapping("/profile/update")
-    public String updateProfile(@ModelAttribute User user, Model model) {
+    public String updateProfile(
+    		@ModelAttribute("currentUser") User currentUser, 
+    		@Valid @ModelAttribute("user") User user, 
+    		BindingResult bindingResult, 
+    		Model model) {
+    	if (bindingResult.hasErrors()) {
+    		bindingResult.getAllErrors().forEach(error -> System.out.println(error.getDefaultMessage()));
+    		FieldError firstFieldError = bindingResult.getFieldErrors().stream().findFirst().orElse(null);
+
+    		if(bindingResult.getAllErrors().size() == 1 && 
+    				firstFieldError != null && 
+    				firstFieldError.getDefaultMessage().equals("Password is required")) {
+    			user.setPassword(currentUser.getPassword());
+    		} else {
+    			return "profile";
+    		}
+        }
+    	user.setEnabled(true);
+    	User newUser = userService.getUserByUsername(user.getUsername());
+    	
+    	if (newUser != null && newUser.getUserId() != currentUser.getUserId()) {
+            bindingResult.rejectValue("username", "error.user", "Username is already taken");
+            return "profile";
+        }
+    	model.addAttribute("success", "User details updated successfully!");
     	userService.updateUser(user);
         return "profile";
+    }
+    
+    @PostMapping("/profile/update-password")
+    public String updatePassword(
+    		@AuthenticationPrincipal UserDetails userDetails,
+    		@ModelAttribute("currentUser") User currentUser, 
+    		@Valid @ModelAttribute("passwordUpdate") PasswordUpdate passwordUpdate,
+            BindingResult bindingResult, Model model) {
+    	model.addAttribute("user", userDetails);
+    	
+        if (bindingResult.hasErrors()) {
+        	bindingResult.getAllErrors().forEach(error -> System.out.println(error.getDefaultMessage()));
+            return "profile";
+        }
+
+        if (!passwordEncoder.matches(passwordUpdate.getCurrentPassword(), currentUser.getPassword())) {
+            bindingResult.rejectValue("currentPassword", "error.passwordUpdate", "Incorrect current password");
+            return "profile";
+        }
+
+        if (passwordEncoder.matches(passwordUpdate.getNewPassword(), currentUser.getPassword())) {
+            bindingResult.rejectValue("newPassword", "error.passwordUpdate", "New password cannot be same as the current password");
+            return "profile";
+        }
+        
+        if (!passwordUpdate.getConfirmPassword().matches(passwordUpdate.getNewPassword())) {
+            bindingResult.rejectValue("confirmPassword", "error.passwordUpdate", "Confirm password should match the new password");
+            return "profile";
+        }
+       
+        currentUser.setPassword(passwordEncoder.encode(passwordUpdate.getNewPassword()));
+        userService.updateUser(currentUser);
+
+        model.addAttribute("success", "Password updated successfully!");
+        return "redirect:/profile";
     }
     
     @GetMapping("/users")
@@ -117,16 +170,9 @@ public class UserController{
     public String approveStaff(@PathVariable Long userId, Model model) {
     	User user = userService.getUserById(userId);
     	user.setEnabled(true);
-    	userService.updateUser(user);
     	
-    	String emailBody = "Dear " + user.getUsername() + ",\n\n"
-		        + "Thank you for registering with us.\n\n"
-		        + "Your account has been verified by our Admin. You will now able to login.\n\n"
-		        + "We look forward to working with you!\n\n"
-		        + "Best regards,\nYour Movie Booking Team";
-		
-		Email emailDetails = new Email(user.getEmail(), "Email Registeration Approved", emailBody);
-        emailService.sendSimpleMail(emailDetails);
+    	userService.updateUser(user);
+        emailService.sendStaffAccountApprovalEmail(user);
         
         return "redirect:/users";
     }

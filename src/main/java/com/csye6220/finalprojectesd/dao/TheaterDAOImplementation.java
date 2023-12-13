@@ -1,5 +1,6 @@
 package com.csye6220.finalprojectesd.dao;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -87,4 +88,21 @@ public class TheaterDAOImplementation implements TheaterDAO {
         }
 	}
 
+	@Override
+	public List<Theater> searchTheatersByNameOrMovieAvailability(String searchTerm) {
+	    try (Session session = sessionFactory.openSession()) {
+	        return session.createQuery(
+	                "SELECT DISTINCT t " +
+	                        "FROM Theater t " +
+	                        "LEFT JOIN FETCH t.showtimes s " +
+	                        "LEFT JOIN FETCH s.movie m " +
+	                        "WHERE lower(t.name) LIKE :searchTerm " +
+	                        "OR lower(m.title) LIKE :searchTerm", Theater.class)
+	                .setParameter("searchTerm", "%" + searchTerm.toLowerCase() + "%")
+	                .getResultList();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return Collections.emptyList();
+	    }
+	}
 }

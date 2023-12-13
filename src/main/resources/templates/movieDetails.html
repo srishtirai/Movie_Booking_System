@@ -47,6 +47,7 @@
 	            <div class="card">
 	                <div class="card-body">
 	                    <h5 class="card-title" th:text="${movie.title}"></h5>
+	                    <hr>
 	                    <p class="card-text"><strong>Description:</strong> <span th:text="${movie.description}"></span></p>
 	                    <p class="card-text"><strong>Release Date:</strong> <span th:text="${#temporals.format(movie.releaseDate, 'dd-MM-yyyy')}"></span></p>
 	                    <p class="card-text"><strong>Duration:</strong> <span th:text="${movie.duration}"></span> minutes</p>
@@ -58,15 +59,15 @@
 	            <br>
 	            <h5 class="card-title">Showtimes: </h5><br>
 	            <a th:href= "@{'/showtime/add/movie/' + ${movie.movieId}}" th:if="${currentUser != null and (#strings.contains(currentUser.authorities, 'ADMIN') or #strings.contains(currentUser.authorities, 'STAFF'))}">
-			        <button type="button" class="btn btn-primary view-button">Add Showtime</button>
-			    </a><br>
+			        <button type="button" class="btn btn-primary view-button">Add Showtime</button><br>
+			    </a>
 			    <div th:if="${error}" class="mb-3">
 			        <p class="alert alert-danger" th:text="${error}"></p>
 			    </div>
 			    <div th:if="${success}" class="mb-3">
 			        <p class="alert alert-success" th:text="${success}"></p>
+			        <br>
 			    </div>
-	            <br>
 	            <table class="table table-bordered">
 					<thead>
 					  	<tr>

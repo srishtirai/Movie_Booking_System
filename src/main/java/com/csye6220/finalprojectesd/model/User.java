@@ -44,7 +44,7 @@ public class User implements UserDetails {
     @Column(name="enabled")
     private Boolean enabled;
     
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Booking> bookings = new HashSet<>();
 
     public User() {

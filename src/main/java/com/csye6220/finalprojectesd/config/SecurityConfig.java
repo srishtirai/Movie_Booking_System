@@ -13,7 +13,6 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.csye6220.finalprojectesd.service.UserService;
-import com.csye6220.finalprojectesd.util.CustomAuthenticationProvider;
 
 @Configuration
 @EnableWebSecurity

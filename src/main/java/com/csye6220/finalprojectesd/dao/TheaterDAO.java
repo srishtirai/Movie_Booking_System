@@ -10,4 +10,5 @@ public interface TheaterDAO {
 	public List<Theater> getAllTheaters();
     public void updateTheater(Theater theater);
     public void deleteTheater(Long id);
+	public List<Theater> searchTheatersByNameOrMovieAvailability(String searchTerm);
 }

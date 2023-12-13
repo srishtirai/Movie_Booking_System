@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.csye6220.finalprojectesd.model.Genre;
+import com.csye6220.finalprojectesd.model.Movie;
 import com.csye6220.finalprojectesd.model.Showtime;
 import com.csye6220.finalprojectesd.model.Theater;
 import com.csye6220.finalprojectesd.service.ShowtimeService;
@@ -37,7 +39,6 @@ public class TheaterController {
 	public String getTheatersPage(Model model) {
 		List<Theater> searchResults = theaterService.getAllTheaters();
 		model.addAttribute("theaters", searchResults);
-		System.out.println(searchResults.size());
 	    return "theaters";
 	}
 	
@@ -72,6 +73,16 @@ public class TheaterController {
         }
         
         return "theaterDetails";
+    }
+    
+    @GetMapping("/search")
+    public String searchMovies(@RequestParam String keyword,
+            Model model) {
+    	
+    	List<Theater> searchResults = theaterService.searchTheatersByNameOrMovieAvailability(keyword);
+    	model.addAttribute("theaters", searchResults);
+    	
+	    return "theaters";
     }
 
     @PostMapping("/edit")
