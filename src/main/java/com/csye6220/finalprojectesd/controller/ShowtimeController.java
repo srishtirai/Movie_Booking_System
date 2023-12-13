@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,8 @@ import com.csye6220.finalprojectesd.model.Theater;
 import com.csye6220.finalprojectesd.service.MovieService;
 import com.csye6220.finalprojectesd.service.ShowtimeService;
 import com.csye6220.finalprojectesd.service.TheaterService;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/showtime")
@@ -58,8 +61,18 @@ public class ShowtimeController {
 	}
     
 	@PostMapping("/add/{type}")
-	public String addShowtime(@ModelAttribute Showtime newshowtime, @PathVariable String type, Model model) {
-	    newshowtime.setMovie(movieService.getMovieById(newshowtime.getMovie().getMovieId()));
+	public String addShowtime(@Valid @ModelAttribute("newshowtime") Showtime newshowtime,
+			BindingResult bindingResult, 
+			@PathVariable String type, 
+			Model model) {
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("theaters", theaterService.getAllTheaters());
+		    model.addAttribute("movies", movieService.getAllMovies());
+    		model.addAttribute("editMode", false);
+            return "addShowtime";
+        }
+		
+		newshowtime.setMovie(movieService.getMovieById(newshowtime.getMovie().getMovieId()));
 	    newshowtime.setTheater(theaterService.getTheaterById(newshowtime.getTheater().getTheaterId()));
 
 	    showtimeService.saveShowtime(newshowtime);
@@ -72,7 +85,8 @@ public class ShowtimeController {
 	    theater.getShowtimes().add(newshowtime);
 	    theaterService.updateTheater(theater);
 
-	    return type.equals("movie") ? "redirect:/movie/details?movieId=" + movie.getMovieId() : "redirect:/theater/details?theaterId=" + theater.getTheaterId();
+	    return type.equals("movie") ? "redirect:/movie/details?movieId=" + movie.getMovieId() : 
+	    	"redirect:/theater/details?theaterId=" + theater.getTheaterId();
 	}
 
 	@PostMapping("/edit/{type}")
@@ -99,14 +113,25 @@ public class ShowtimeController {
 	}
 
 	@PostMapping("/editSave/{type}")
-	public String editShowtime(@ModelAttribute("newshowtime") Showtime editedShowtime, @PathVariable String type, Model model) {
+	public String editShowtime(@Valid @ModelAttribute("newshowtime") Showtime editedShowtime, 
+			BindingResult bindingResult, 
+			@PathVariable String type, 
+			Model model) {
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("theaters", theaterService.getAllTheaters());
+		    model.addAttribute("movies", movieService.getAllMovies());
+    		model.addAttribute("editMode", true);
+            return "addShowtime";
+        }
+		
 		Long movieId = editedShowtime.getMovie().getMovieId();
 		Long theaterId = editedShowtime.getTheater().getTheaterId();
 	    editedShowtime.setMovie(movieService.getMovieById(movieId));
 	    editedShowtime.setTheater(theaterService.getTheaterById(theaterId));
 	    showtimeService.updateShowtime(editedShowtime);
 
-	    return type.equals("movie") ? "redirect:/movie/details?movieId=" + movieId : "redirect:/theater/details?theaterId=" + theaterId;
+	    return type.equals("movie") ? "redirect:/movie/details?movieId=" + movieId : 
+	    	"redirect:/theater/details?theaterId=" + theaterId;
 	}
 
 	@PostMapping("/delete/{type}")
@@ -116,7 +141,8 @@ public class ShowtimeController {
 	    Showtime showtime = showtimeService.getShowtimeById(id);
 	    showtimeService.deleteShowtime(showtime);
 	    
-	    return type.equals("movie") ? "redirect:/movie/details?movieId=" + movieId : "redirect:/theater/details?theaterId=" + theaterId;
+	    return type.equals("movie") ? "redirect:/movie/details?movieId=" + movieId : 
+	    	"redirect:/theater/details?theaterId=" + theaterId;
 	}
 
 

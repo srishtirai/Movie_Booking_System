@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ import com.csye6220.finalprojectesd.service.MovieService;
 import com.csye6220.finalprojectesd.service.ShowtimeService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/movie")
@@ -48,7 +50,12 @@ public class MovieController {
     }
     
     @PostMapping("/add")
-    public String addMovie(@ModelAttribute("newMovie") Movie newMovie, Model model) {
+    public String addMovie(@Valid @ModelAttribute("newMovie") Movie newMovie, BindingResult bindingResult, Model model) {
+    	if (bindingResult.hasErrors()) {
+    		model.addAttribute("editMode", false);
+            return "addMovie";
+        }
+    
     	movieService.saveMovie(newMovie);
         return "redirect:/movie";
     }
@@ -118,7 +125,12 @@ public class MovieController {
     }
 
     @PostMapping("/editSave")
-    public String editMovie(@ModelAttribute Movie editedMovie, Model model) {
+    public String editMovie(@Valid @ModelAttribute("newMovie") Movie editedMovie, BindingResult bindingResult, Model model) {
+    	if (bindingResult.hasErrors()) {
+    		model.addAttribute("editMode", true);
+            return "addMovie";
+        }
+    	
     	movieService.updateMovie(editedMovie);
         return "redirect:/movie";
     }

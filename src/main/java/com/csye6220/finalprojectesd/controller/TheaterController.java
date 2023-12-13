@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import com.csye6220.finalprojectesd.service.ShowtimeService;
 import com.csye6220.finalprojectesd.service.TheaterService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/theater")
@@ -47,7 +49,12 @@ public class TheaterController {
     }
     
     @PostMapping("/add")
-    public String addTheater(@ModelAttribute Theater newTheater, Model model) {
+    public String addTheater(@Valid @ModelAttribute("newtheater") Theater newTheater, BindingResult bindingResult, Model model) {
+    	if (bindingResult.hasErrors()) {
+    		model.addAttribute("editMode", false);
+            return "addTheater";
+        }
+    	
     	theaterService.saveTheater(newTheater);
         return "redirect:/theater";
     }
@@ -87,7 +94,12 @@ public class TheaterController {
     }
 
     @PostMapping("/editSave")
-    public String editTheater(@ModelAttribute Theater editedTheater, Model model) {
+    public String editTheater(@Valid @ModelAttribute("newtheater") Theater editedTheater, BindingResult bindingResult, Model model) {
+    	if (bindingResult.hasErrors()) {
+    		model.addAttribute("editMode", true);
+            return "addTheater";
+        }
+    	
     	theaterService.updateTheater(editedTheater);
         return "redirect:/theater";
     }

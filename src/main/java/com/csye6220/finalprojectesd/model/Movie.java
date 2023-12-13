@@ -4,6 +4,12 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.validator.constraints.URL;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import jakarta.persistence.*;
 
 @Entity
@@ -15,22 +21,30 @@ public class Movie {
 	@Column(name="movie_id")
     private Long movieId;
 	
+	@NotBlank(message = "Title is required")
+	@Size(max = 100, message = "Title cannot exceed 100 characters")
     private String title;
     
     private String description;
     
+    @NotNull(message = "Release date is required")
     @Column(name="release_date")
     private LocalDate releaseDate;
     
+    @Min(value = 10, message = "Duration must be at least 10 minutes")
     private int duration;
     
+    @NotNull(message = "Release date is required")
     @Enumerated(EnumType.STRING)
     private Genre genre;
     
     private String cast;
     
+    @NotBlank(message = "Language is required")
     private String language;
     
+    @NotBlank(message = "Image URL is required")
+    @URL(message = "Invalid URL format")
     @Column(name="image_url")
     private String imageUrl;
     

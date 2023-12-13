@@ -4,17 +4,8 @@ import java.util.Date;
 
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "notifications")
 public class Notification {
-	
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="notification_id")
-	private Long notificationId;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+
 	private User user;
 	
 	private String message;
@@ -23,15 +14,7 @@ public class Notification {
 	
 	public Notification() {
 	}
-
-	public Long getNotificationId() {
-		return notificationId;
-	}
-
-	public void setNotificationId(Long notificationId) {
-		this.notificationId = notificationId;
-	}
-
+	
 	public User getUser() {
 		return user;
 	}
