@@ -57,11 +57,14 @@ public class UserService implements UserDetailsService {
     	return userDAO.findReviewsByUser(user);
     }
     
+    public User getUserByUsernameOrEmail(String usernameOrEmail) {
+    	return userDAO.getUserByUsernameOrEmail(usernameOrEmail);
+    }
+    
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = getUserByEmail(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found with username: " + username);
+        User user = getUserByUsernameOrEmail(username);        if (user == null) {
+        	throw new UsernameNotFoundException("User not found with username: " + username);
         }
         return user;
     }

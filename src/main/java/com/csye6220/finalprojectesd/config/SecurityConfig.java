@@ -21,12 +21,10 @@ public class SecurityConfig {
 
 	private final UserService userService;
 	private final PasswordEncoder passwordEncoder;
-	private final CustomAuthenticationProvider authenticationProvider;
 
-    public SecurityConfig(UserService userService, PasswordEncoder passwordEncoder, CustomAuthenticationProvider authenticationProvider) {
+    public SecurityConfig(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
-        this.authenticationProvider = authenticationProvider;
     }
 
     @Bean
@@ -46,20 +44,22 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/", true)
                         .failureHandler((request, response, exception) -> {
                             String errorMessage;
-                            System.out.println(exception+" "+exception.getMessage());
-                            if (exception instanceof BadCredentialsException) {
-                                String exceptionMessage = exception.getMessage();
+                            
+                            String username = request.getParameter("username");
 
-                                if (exceptionMessage.contains("UsernameNotFoundException")) {
+                            if (exception instanceof BadCredentialsException) {
+                                if (userService.getUserByUsernameOrEmail(username) == null) {
                                     errorMessage = "User not found. Sign Up to continue";
                                 } else {
                                     errorMessage = "Invalid password";
                                 }
-                            }	else {
+                            } else if(exception.getMessage().equals("User is disabled")) {
+                                errorMessage = "The account is currently disabled. You will be able to login once your account has been approved by ADMIN";
+                            } else {
                                 errorMessage = "Authentication failed";
                             }
                             request.getSession().setAttribute("error", errorMessage);
-                            new DefaultRedirectStrategy().sendRedirect(request, response, "/login?error=true");
+                            new DefaultRedirectStrategy().sendRedirect(request, response, "/login");
                         })
                 )
                 .logout((logout) -> logout
@@ -71,9 +71,8 @@ public class SecurityConfig {
     }
 
     @Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
-        	.authenticationProvider(authenticationProvider)
         	.userDetailsService(userService)
         	.passwordEncoder(passwordEncoder);
     }

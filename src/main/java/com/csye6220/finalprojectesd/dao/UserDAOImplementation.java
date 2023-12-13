@@ -39,8 +39,8 @@ public class UserDAOImplementation implements UserDAO {
 	@Override
 	public User getUserByEmail(String email) {
 		try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM User WHERE email = :email", User.class)
-                    .setParameter("email", email)
+            return session.createQuery("FROM User WHERE LOWER(email) = :email", User.class)
+                    .setParameter("email", email.toLowerCase())
                     .uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,8 +51,20 @@ public class UserDAOImplementation implements UserDAO {
 	@Override
 	public User getUserByUsername(String username) {
 		try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM User WHERE username = :username", User.class)
-                    .setParameter("username", username)
+            return session.createQuery("FROM User WHERE LOWER(username) = :username", User.class)
+                    .setParameter("username", username.toLowerCase())
+                    .uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+	}
+	
+	@Override
+	public User getUserByUsernameOrEmail(String usernameOrEmail) {
+		try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM User WHERE LOWER(username) = :name or LOWER(email) =:name", User.class)
+                    .setParameter("name", usernameOrEmail.toLowerCase())
                     .uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();

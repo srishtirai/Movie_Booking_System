@@ -10,9 +10,9 @@
 	<body>
 		<div class="d-flex flex-column align-items-center justify-content-center vh-100">
 		    <div class="mb-3">
-		        <h1 class="text-center" th:text="${#strings.capitalize(type)}"></h1>
+		        <h1 class="text-center">Login</h1>
 		    </div>
-		    <div th:if="${param.error}" class="mb-3">
+		    <div th:if="${session.error}" class="mb-3">
 		        <p class="alert alert-danger" th:text="${session.error}"></p>
 		    </div>
 		    <div th:if="${error}" class="mb-3">
@@ -21,29 +21,10 @@
 		    <div th:if="${success}" class="mb-3">
 		        <p class="alert alert-success" th:text="${success}"></p>
 		    </div>
-		    <form class="text-center" method="post" th:action="@{'/' + ${type}}">
-				<div class="mb-3" th:if="${type == 'signup'}">
-		            <label for="role">Role</label><br>
-		            <div class="form-check form-check-inline">
-					  <input class="form-check-input" type="radio" id="user" name="role" th:value="'USER'" checked>
-					  <label class="form-check-label" for="user">
-					    User
-					  </label>
-					</div>
-					<div class="form-check form-check-inline">
-					  <input class="form-check-input" type="radio" id="staff" name="role" th:value="'STAFF'">
-					  <label class="form-check-label" for="staff">
-					    Staff
-					  </label>
-					</div>
-		        </div>
-		        <div class="mb-3" th:if="${type == 'signup'}">
-		            <label for="username" class="form-label">Username</label>
-		            <input type="username" class="form-control" id="username" name="userid" required>
-		        </div>
+		    <form class="text-center" method="post" th:action="@{/login}">
 		        <div class="mb-3">
-		            <label for="email" class="form-label">Email</label>
-		            <input type="email" class="form-control" id="email" name="username" required>
+		            <label for="email" class="form-label">Username / Email</label>
+		            <input type="text" class="form-control" id="email" name="username" required>
 		        </div>
 		        <div class="mb-3">
 		            <label for="role" class="form-label">Password</label>

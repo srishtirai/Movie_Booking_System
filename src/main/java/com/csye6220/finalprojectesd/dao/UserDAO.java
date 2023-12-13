@@ -16,4 +16,5 @@ public interface UserDAO {
     public void updateUser(User user);
     public void deleteUser(User user);
     public List<Review> findReviewsByUser(User user);
+	User getUserByUsernameOrEmail(String usernameOrEmail);
 }

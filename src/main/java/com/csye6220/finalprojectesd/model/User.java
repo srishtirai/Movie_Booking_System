@@ -10,6 +10,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -20,16 +22,23 @@ public class User implements UserDetails {
     @Column(name="user_id")
     private Long userId;
 	
+	@Column
+    @NotNull(message = "Username is required")
     private String username;
     
+    @NotNull(message = "Email is required")
     private String email;
-    
+
+    @Size(min = 6, message = "Password must be at least 6 characters long")
+    @NotNull(message = "Password is required")
     private String password;
-    
+
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "Role is required")
     private UserRole role;
     
-    @Column(name="phone_number")
+    @Column(name = "phone_number")
+    @NotNull(message = "Phone Number is required")
     private Long phoneNumber;
     
     @Column(name="enabled")
@@ -40,14 +49,6 @@ public class User implements UserDetails {
 
     public User() {
     }
-
-    public User(String username, String email, String password, UserRole role,  Long phoneNumber) {
-		this.username = username;
-		this.email = email;
-		this.password = password;
-		this.role = role;
-		this.phoneNumber = phoneNumber;
-	}
 
 	public Long getUserId() {
         return userId;
@@ -88,16 +89,16 @@ public class User implements UserDetails {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public Long getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(Long phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }  
     
-    public Boolean getEnabled() {
+    public Long getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(Long phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public Boolean getEnabled() {
 		return enabled;
 	}
 
@@ -136,6 +137,13 @@ public class User implements UserDetails {
 
 	public void setBookings(Set<Booking> bookings) {
 		this.bookings = bookings;
+	}
+
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", username=" + username + ", email=" + email + ", password=" + password
+				+ ", role=" + role + ", phoneNumber=" + phoneNumber + ", enabled=" + enabled + ", bookings=" + bookings
+				+ "]";
 	}
     
 }

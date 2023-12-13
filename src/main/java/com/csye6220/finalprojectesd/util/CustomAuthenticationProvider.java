@@ -9,16 +9,21 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import com.csye6220.finalprojectesd.model.User;
+import com.csye6220.finalprojectesd.service.UserService;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
-	private final UserDetailsService userDetailsService;
-
-    @Autowired
-    public CustomAuthenticationProvider(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
+	private final UserService userService;
+	private final PasswordEncoder passwordEncoder;
+	
+    public CustomAuthenticationProvider(UserService userService, PasswordEncoder passwordEncoder) {
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -26,15 +31,15 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        UserDetails userDetails;
-        
+        User userDetails;
+        System.out.println(username + " " + password);
         try {
-            userDetails = userDetailsService.loadUserByUsername(username);
+            userDetails = userService.getUserByUsernameOrEmail(username);
         } catch (UsernameNotFoundException ex) {
             throw new UsernameNotFoundException("User not found", ex);
         }
-
-        if (!password.equals(userDetails.getPassword())) {
+        System.out.println(passwordEncoder.encode(password) + " " + userDetails.getPassword());
+        if (!passwordEncoder.encode(password).equals(userDetails.getPassword())) {
             throw new BadCredentialsException("Invalid password");
         }
 

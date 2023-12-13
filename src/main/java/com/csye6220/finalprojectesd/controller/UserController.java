@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import com.csye6220.finalprojectesd.service.EmailService;
 import com.csye6220.finalprojectesd.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 @Controller
 public class UserController{
@@ -41,7 +43,6 @@ public class UserController{
     
     @GetMapping("/login")
     public String showLoginForm(Model model) {
-    	model.addAttribute("type", "login");
         return "login";
     }
     
@@ -53,29 +54,36 @@ public class UserController{
     @GetMapping("/signup")
     public String showSignUpForm(Model model) {
     	model.addAttribute("user", new User());
-    	model.addAttribute("type", "signup");
-        return "login";
+        return "signup";
     }
 
     @PostMapping("/signup")
-    public String userSignUp(@RequestParam String role, @RequestParam String userid, @RequestParam String username, @RequestParam String password, Model model, RedirectAttributes redirectAttributes) {
-    	User user = userService.getUserByEmail(username);
-    	if(user != null) {
+    public String userSignUp(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+    	if (bindingResult.hasErrors()) {
+            return "signup";
+        }
+    	
+    	if (userService.getUserByUsername(user.getUsername()) != null) {
+            bindingResult.rejectValue("username", "error.user", "Username is already taken");
+            return "signup";
+        }
+    	
+    	if (userService.getUserByEmail(user.getEmail()) != null) {
     		redirectAttributes.addFlashAttribute("error", "Email is already registered. Login to continue.");
             return "redirect:/login";
-    	} else {
-    		UserRole roleValue = UserRole.valueOf(role);
-    		User newUser = new User(userid, username, passwordEncoder.encode(password), roleValue, 123456789L);
-    		newUser.setEnabled(role.equals("USER"));
-    		userService.saveUser(newUser);
+        }	else {
+    		user.setEnabled(user.getRole().equals(UserRole.USER));
+    		user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+    		userService.saveUser(user);
     		
-    		String emailBody = "Dear " + userid + ",\n\n"
+    		String emailBody = "Dear " + user.getUsername() + ",\n\n"
 			        + "Thank you for registering with us.\n\n"
 			        + "You will be able to Login once your account has been verified by our Admin.\n\n"
 			        + "We look forward to working with you!\n\n"
 			        + "Best regards,\nYour Movie Booking Team";
     		
-    		Email emailDetails = new Email(username, "Email Registeration Successful", emailBody);
+    		Email emailDetails = new Email(user.getEmail(), "Email Registeration Successful", emailBody);
 	        emailService.sendSimpleMail(emailDetails);
     		
     		redirectAttributes.addFlashAttribute("success", "Email registeration is complete. Login to continue.");
