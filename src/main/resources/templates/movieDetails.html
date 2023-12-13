@@ -59,7 +59,7 @@
 	            <br>
 	            <h5 class="card-title">Showtimes: </h5><br>
 	            <a th:href= "@{'/showtime/add/movie/' + ${movie.movieId}}" th:if="${currentUser != null and (#strings.contains(currentUser.authorities, 'ADMIN') or #strings.contains(currentUser.authorities, 'STAFF'))}">
-			        <button type="button" class="btn btn-primary view-button">Add Showtime</button><br>
+			        <button type="button" class="btn btn-primary view-button">Add Showtime</button><br><br>
 			    </a>
 			    <div th:if="${error}" class="mb-3">
 			        <p class="alert alert-danger" th:text="${error}"></p>
@@ -67,6 +67,16 @@
 			    <div th:if="${success}" class="mb-3">
 			        <p class="alert alert-success" th:text="${success}"></p>
 			        <br>
+			    </div>
+			    <div th:if="${paymentSuccess}" class="alert alert-success">
+			        <h3 class="alert-heading">Payment Successful</h3>
+			        <p class="mb-0">Charge ID: <span th:text="${chargeId}"></span></p>
+			        <p class="mb-0">Status: <span th:text="${status}"></span></p>
+			        <p class="mb-0">Amount: $<span th:text="${amount}"></span></p>
+			    </div>
+			    <div th:if="${paymentSuccess != null && !paymentSuccess}" class="alert alert-danger">
+			        <h3 class="alert-heading">Payment Error</h3>
+			        <p th:text="${error}"></p>
 			    </div>
 	            <table class="table table-bordered">
 					<thead>
@@ -97,9 +107,9 @@
 								</div>
 				            </td>
 				            <td th:if="${currentUser != null and (#strings.contains(currentUser.authorities, 'USER'))}">
-								<form th:action="@{/booking/add}" method="post">
+								<form th:action="@{/booking/confirm}" method="post">
 							        <input type="hidden" name="showtimeId" th:value="${showtime.showtimeId}">
-							        No of Tickets:<input type="number" name="numberOfTickets">
+							        No of Tickets:<input type="number" name="numberOfTickets" style="width: 100px;">
 						            <button type="submit" class="btn btn-primary">Book</button>
 						        </form>
 				            </td>

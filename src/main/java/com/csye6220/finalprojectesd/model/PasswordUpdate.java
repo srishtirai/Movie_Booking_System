@@ -1,9 +1,14 @@
 package com.csye6220.finalprojectesd.model;
 
+import jakarta.validation.constraints.Size;
+
 public class PasswordUpdate {
 
     private String currentPassword;
+    
+    @Size(min = 6, message = "Password must be at least 6 characters long")
     private String newPassword;
+    
     private String confirmPassword;
     
 	public PasswordUpdate() {

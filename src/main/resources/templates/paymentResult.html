@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Successful</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+
+    <div class="alert alert-success">
+        <h1 class="alert-heading">Payment Successful</h1>
+        <p class="mb-0">Charge ID: <span th:text="${chargeId}"></span></p>
+        <p class="mb-0">Status: <span th:text="${status}"></span></p>
+        <p class="mb-0">Amount: $<span th:text="${amount}"></span></p>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
