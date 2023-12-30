@@ -146,7 +146,7 @@ The application is configured to use MySQL as the database.
 Update the `application.properties` file with your MySQL database configuration:
 `src/main/resources/application.properties`
 ```
-spring.datasource.url=jdbc:mysql://localhost:3306/course_registration_db
+spring.datasource.url=jdbc:mysql://localhost:3306/final_project_esd
 spring.datasource.username=[Username]
 spring.datasource.password=[Password]
 spring.jpa.hibernate.ddl-auto=update
