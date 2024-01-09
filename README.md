@@ -15,16 +15,15 @@ through a variety of movies, each accompanied by detailed information. Registere
 manage their profiles, track past and upcoming bookings, and receive timely notifications. On
 the other side, administrators oversee the entire movie management system. They have the
 authority to add, update, or remove movie listings, theatres, and showtimes. While staff will have
-restricted access such that they will not be able to remove movie listings or showtimes etc.
+restricted access, they will not be able to remove movie listings or showtimes, etc.
 
 ## Table of Contents
 
 1. [Installation](#installation)
 2. [Usage](#usage)
 3. [Database Configuration](#database-configuration)
-4. [Object-Oriented Design](#object-oriented-design)
-5. [Notable Design points](#notable-design-points)
-6. [Database Schema](#database-schema)
+4. [Notable Design points](#notable-design-points)
+5. [Database Schema](#database-schema)
 
 ## Installation
 
@@ -151,25 +150,6 @@ spring.datasource.username=[Username]
 spring.datasource.password=[Password]
 spring.jpa.hibernate.ddl-auto=update
 ```
-## Object-Oriented Design
-
-This project follows **Object-Oriented Design principles and Design Patters.**
-The individual contributions are displayed here.
-
-1. Encapsulation - We're creating POJO's [Plain Old Java Objects]
-2. Interfaces have been used while creating DAO classes for Hibernate
-3. Inheritance - Student and Teacher are inherited from User
-4. Polymorphism - we're overriding functions
-5. Comparators for sorting course details based on name
-6. Streams to filter and search courses and students
-7. ENUM's to declare user roles
-8. Singleton design pattern for creating SessionFactory for Hibernate
-9. Factory design pattern to create Student and Person accounts
-10. Read CSV files to get Student and Person details using Generic class
-11. Used various data structures like Arrays, List, Set etc.
-12. Lambda expressions for sorting
-13. Exception handling is done in multiple places
-	
  Entities are designed to represent real-world objects, and relationships are modelled to reflect the business logic.
  
  ## Notable Design points
@@ -178,7 +158,7 @@ The individual contributions are displayed here.
 2. Database - **MySQL** has been used to store the data for the application.
 3. ORM - **Hibernate** has been used to maintain data persistence.
 4. Framework  - **Spring boot** has been used to create a stand-alone application.
-5. Security - **Spring Security** has been implmented to ensure session management and role based authentication & authorization
+5. Security - **Spring Security** has been implemented to ensure session management and role-based authentication & authorization
  
  ## Database Schema
 
