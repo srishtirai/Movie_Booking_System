@@ -1,8 +1,3 @@
-# Final Project for CSYE6220 - Enterprise Software Design
-> Northeastern University, College of Engineering
-
-## Professor: Yusuf Ozbek
-
 ## Movie Booking System
 The Movie Ticket Booking System is designed to cater to a diverse set of users which includes
 the consumers who want to browse through movies, check ratings book tickets etc. and
